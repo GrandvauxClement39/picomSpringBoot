@@ -14,4 +14,6 @@ public interface TimeIntervalService {
     TimeInterval finById(Long id);
 
     boolean deleteById(Long id);
+
+    TimeInterval update(TimeInterval timeInterval);
 }

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.util.List;
 
 @RestController
@@ -29,17 +30,19 @@ public class TimeIntervalRestController {
     @PostMapping("timeInterval")
     @ResponseStatus(code = HttpStatus.CREATED)
     public TimeInterval addNewTimeInterval(@RequestBody TimeInterval timeInterval) {
-        // TODO METHOD TO GET DATA FROM BODY
         System.out.println("--------------- "+timeInterval);
-       /* TimeInterval timeInterval = new TimeInterval();
-        timeInterval.setTimeSlot(timeSlot);
-        timeInterval.setCoefMulti(coefMulti);*/
+
         return timeIntervalService.add(timeInterval);
     }
 
     @DeleteMapping("timeInterval/{id}")
     public boolean deleteTimeIntervalById(@PathVariable Long id){
         return timeIntervalService.deleteById(id);
+    }
+
+    @PatchMapping("timeInterval")
+    public TimeInterval updateTimeInterval(@RequestBody TimeInterval timeInterval){
+        return timeIntervalService.update(timeInterval);
     }
 
 }

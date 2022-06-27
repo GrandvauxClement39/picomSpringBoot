@@ -37,4 +37,12 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
             return false;
         }
     }
+
+    public TimeInterval update(TimeInterval timeInterval){
+        if (timeIntervalDAO.existsById(timeInterval.getId())){
+           return timeIntervalDAO.save(timeInterval);
+        } else {
+            return null;
+        }
+    }
 }
