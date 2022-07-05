@@ -30,7 +30,7 @@ public class CountryRestControllerTest {
     @Autowired
     private final static String PATH = "http://localhost:8280/countries/";
 
-    @Test
+  /*  @Test
     @Order(1)
     public void TestAddingCountry() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post(PATH+"Mongolie/+58"))
@@ -40,5 +40,5 @@ public class CountryRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.phoneIndicative").value("+58"))
                 .andExpect(status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
-    }
+    }*/
 }
