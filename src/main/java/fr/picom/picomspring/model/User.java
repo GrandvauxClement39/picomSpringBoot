@@ -2,7 +2,7 @@ package fr.picom.picomspring.model;
 
 import javax.persistence.*;
 import java.util.List;
-
+//TODO ADD JSON IGNORE WHEN is util !!
 @Entity
 @Table(name = "user2")
 public class User {
