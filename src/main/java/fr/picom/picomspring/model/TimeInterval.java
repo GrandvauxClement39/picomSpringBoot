@@ -1,5 +1,7 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class TimeInterval {
 
     private Double coefMulti;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "timeIntervalList")
     private List<AdArea> adList;
 
