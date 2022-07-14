@@ -1,9 +1,12 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -16,12 +19,13 @@ public class City {
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @NotNull
+    @JsonBackReference
     @ManyToOne
     private Country country;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "city")
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     private List<User> userList;
 
     public City() {

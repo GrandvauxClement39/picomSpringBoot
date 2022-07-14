@@ -1,7 +1,11 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -14,13 +18,15 @@ public class Area {
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @NotNull
     private Double price;
 
     @OneToMany(mappedBy = "area")
+    @JsonManagedReference
     private List<Stop> stopList;
 
     @OneToMany(mappedBy = "area")
+    @JsonManagedReference
     private List<AdArea> adAreaList;
 
     public Area() {

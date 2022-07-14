@@ -1,6 +1,8 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -41,14 +43,17 @@ public class User {
 
     private String postalCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private City city;
 
     @ManyToOne
+    @JsonBackReference
     private Role role;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
+    @JsonManagedReference
     private List<Ad> adList;
 
     public User() {

@@ -1,5 +1,9 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,12 +15,15 @@ public class AdArea {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private Ad ad;
 
     @ManyToOne
+    @JsonBackReference
     private Area area;
 
     @ManyToMany
+    @JsonManagedReference
     private List<TimeInterval> timeIntervalList;
 
     public AdArea() {

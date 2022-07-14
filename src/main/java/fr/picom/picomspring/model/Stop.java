@@ -1,7 +1,11 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -14,13 +18,14 @@ public class Stop {
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @NotNull
     private Double latitude;
 
-    @NotEmpty
+    @NotNull
     private Double longitude;
 
     @ManyToOne
+    @JsonBackReference
     private Area area;
 
     @NotEmpty
