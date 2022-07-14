@@ -1,6 +1,9 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -10,10 +13,12 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
     private String phoneIndicative;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "country")
     private List<City> cityList;
 

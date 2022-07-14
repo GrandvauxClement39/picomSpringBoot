@@ -2,6 +2,7 @@ package fr.picom.picomspring.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class Ad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotEmpty
     private String title;
 
     private String image;
@@ -22,10 +23,13 @@ public class Ad {
 
     private LocalDate createdAt;
 
+    @NotEmpty
     private LocalDate startAt;
 
+    @NotEmpty
     private Integer numDaysOfDiffusion;
 
+    @NotEmpty
     @ManyToOne
     private User user;
 

@@ -1,6 +1,8 @@
 package fr.picom.picomspring.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Stop {
@@ -9,15 +11,20 @@ public class Stop {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private Double latitude;
 
+    @NotEmpty
     private Double longitude;
 
     @ManyToOne
     private Area area;
 
+    @NotEmpty
+    @Pattern(regexp = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$")
     private String adressIp;
 
     public Stop() {

@@ -1,6 +1,7 @@
 package fr.picom.picomspring.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -10,8 +11,10 @@ public class Area {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @NotEmpty
     private Double price;
 
     @OneToMany(mappedBy = "area")

@@ -1,6 +1,9 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
@@ -10,8 +13,10 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role")
     private List<User> userList;
 

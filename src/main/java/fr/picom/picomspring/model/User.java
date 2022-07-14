@@ -1,6 +1,9 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 //TODO ADD JSON IGNORE WHEN is util !!
 @Entity
@@ -11,11 +14,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Veuillez renseigner votre nom")
     private String lastName;
 
+    @NotEmpty(message = "Veuillez renseigner votre prénom")
     private String firstName;
 
+    @Email(message = "Veuillez saisir un email correct")
+    @NotEmpty(message = "Veuillez renseigner votre email")
     private String email;
+
 
     private String password;
 
@@ -23,6 +31,8 @@ public class User {
 
     private boolean isVerified;
 
+    @NotEmpty(message = "Veuillez renseigner votre numéro siret")
+    @Size(min = 13, max = 15, message = "Votre numéro siret doit avoir 14 chiffres")
     private String numSiret;
 
     private String companyName;
@@ -38,6 +48,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Ad> adList;
 
     public User() {
