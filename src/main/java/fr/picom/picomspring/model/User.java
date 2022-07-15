@@ -52,7 +52,6 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     @JsonManagedReference
     private List<Ad> adList;
 

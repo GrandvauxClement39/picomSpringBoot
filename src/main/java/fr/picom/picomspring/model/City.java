@@ -24,7 +24,7 @@ public class City {
     @ManyToOne
     private Country country;
 
-    @JsonManagedReference
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
     private List<User> userList;
 

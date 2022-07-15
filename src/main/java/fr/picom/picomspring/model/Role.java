@@ -17,7 +17,6 @@ public class Role {
     @NotEmpty
     private String name;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "role")
     @JsonManagedReference
     private List<User> userList;

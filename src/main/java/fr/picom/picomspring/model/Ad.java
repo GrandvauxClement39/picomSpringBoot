@@ -1,6 +1,7 @@
 package fr.picom.picomspring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -39,7 +40,7 @@ public class Ad {
     private User user;
 
     @OneToMany(mappedBy = "ad")
-    @JsonManagedReference
+    @JsonIgnore
     private List<AdArea> adAreaList;
 
     public Ad() {
