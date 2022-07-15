@@ -57,9 +57,9 @@ public class AddDataInitial implements CommandLineRunner {
 
     public void addRoleAndUser(){
         List<City> cityList = cityDAO.findAll();
-        Role admin = new Role("Admin");
+        Role admin = new Role("ROLE_ADMIN");
         roleDAO.save(admin);
-        Role customer = new Role("Customer");
+        Role customer = new Role("ROLE_CUSTOMER");
         roleDAO.save(customer);
         User adminUser = new User();
         adminUser.setRole(admin);
