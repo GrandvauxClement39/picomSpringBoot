@@ -13,24 +13,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests()
-                .antMatchers("/api").hasRole("ROLE_CUSTOMER")
+                .antMatchers("/api").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin()/*
                 .and()
-                .oauth2Login();
+                .oauth2Login()*/;
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.inMemoryAuthentication()
-                .withUser("admin").password(passwordEncoder().encode("Admin123"))
-                .roles("ROLE_CUSTOMER");
+                .withUser("admin@admin.com").password(passwordEncoder().encode("Admin123"))
+                .roles("CUSTOMER");
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
