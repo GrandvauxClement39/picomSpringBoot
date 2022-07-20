@@ -20,9 +20,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()/*
+                .formLogin()
                 .and()
-                .oauth2Login()*/;
+                .oauth2Login();
     }
 
     @Override
