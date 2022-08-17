@@ -9,7 +9,7 @@ import java.security.Principal;
 @RestController
 public class LoginController {
 
-    @RolesAllowed("CUSTOMER")
+    /*@RolesAllowed("CUSTOMER")
     @RequestMapping("/**")
     public String getUser(){
         return "Welcome user !";
@@ -25,6 +25,6 @@ public class LoginController {
     public String getGithub(Principal user)
     {
         return "Welcome Github user!" + user.getName();
-    }
+    }*/
 
 }

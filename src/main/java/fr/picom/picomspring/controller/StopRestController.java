@@ -9,32 +9,32 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/stop")
+@RequestMapping("/api")
 public class StopRestController {
 
     private StopService stopService;
 
-    @GetMapping("/")
+    @GetMapping("/stop")
     public List<Stop> getAllStop(){
         return stopService.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/stop/{id}")
     public Stop getStopById(@PathVariable Long id){
         return stopService.finById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("/stop")
     public Stop addNewStop(@RequestBody Stop stop){
         return stopService.add(stop);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/stop/{id}")
     public boolean deleteStopById(@PathVariable Long id){
         return stopService.deleteById(id);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("/stop")
     public Stop updateStop(@RequestBody Stop stop){
         return stopService.update(stop);
     }
