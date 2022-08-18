@@ -1,11 +1,15 @@
 package fr.picom.picomspring.controller;
 
+import fr.picom.picomspring.config.AuthRequest;
 import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,10 +28,11 @@ public class UserRestController {
         return userService.finById(id);
     }
 
-    @PostMapping("/api/user")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public User register(@RequestBody User user){
-        return userService.register(user);
+    @PostMapping(path = "/auth/register")
+    public ResponseEntity<?> register(@RequestBody @Valid User user){
+        User newUser = new User();
+        System.out.println("user"+ user.getCity());
+        return ResponseEntity.ok().body(userService.register(user));
     }
 
 }

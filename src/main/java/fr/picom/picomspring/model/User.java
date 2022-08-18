@@ -1,6 +1,7 @@
 package fr.picom.picomspring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,7 +51,6 @@ public class User implements UserDetails {
     private City city;
 
     @ManyToOne
-    @JsonBackReference
     private Role role;
 
     @OneToMany(mappedBy = "user")
