@@ -17,7 +17,10 @@ public class AreaRestController {
 
     @GetMapping("/")
     public List<Area> getAllArea(){
-        return areaService.findAll();
+
+        List<Area> allArea = areaService.findAll();
+        System.out.println(allArea);
+        return allArea;
     }
 
     @GetMapping("/{id}")
