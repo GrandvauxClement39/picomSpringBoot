@@ -21,12 +21,12 @@ public class Area {
     @NotNull
     private Double price;
 
-    @OneToMany(mappedBy = "area")
+    @OneToMany(mappedBy = "area", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Stop> stopList;
 
-    @OneToMany(mappedBy = "area")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "area", cascade = CascadeType.DETACH)
+    @JsonIgnore
     private List<AdArea> adAreaList;
 
     public Area() {
@@ -78,8 +78,8 @@ public class Area {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", stopList=" + stopList +
-                ", adAreaList=" + adAreaList +
+                /*", stopList=" + stopList +
+                ", adAreaList=" + adAreaList +*/
                 '}';
     }
 }
