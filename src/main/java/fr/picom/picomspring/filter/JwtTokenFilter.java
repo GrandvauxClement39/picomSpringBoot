@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
