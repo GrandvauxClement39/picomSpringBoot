@@ -14,6 +14,8 @@ public interface AdService {
 
     List<Ad> filterByUserAndTitleContain(User user, String title);
 
+    List<Ad> findAllByUser(User user);
+
     boolean deleteById(Long id);
 
     Ad update(Ad ad);

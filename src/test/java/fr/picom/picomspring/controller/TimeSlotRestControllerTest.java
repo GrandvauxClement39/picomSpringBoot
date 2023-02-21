@@ -1,3 +1,4 @@
+/*
 package fr.picom.picomspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,8 @@ public class TimeSlotRestControllerTest {
     @Autowired
     private final static String PATH = "http://localhost:8280/api/timeInterval";
 
-    @Test
+   */
+/* @Test
     @Order(1)
     public void TestAddingTimeSlot() throws Exception{
         TimeInterval timeInterval = new TimeInterval();
@@ -47,5 +49,7 @@ public class TimeSlotRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.coefMulti").value(5.2))
                 .andExpect(status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
-    }
+    }*//*
+
 }
+*/

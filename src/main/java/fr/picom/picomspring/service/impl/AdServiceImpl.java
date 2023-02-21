@@ -34,6 +34,11 @@ public class AdServiceImpl implements AdService {
         return adDAO.findAllByTitleContainsAndUser(title, user);
     }
 
+    @Override
+    public List<Ad> findAllByUser(User user) {
+        return adDAO.findAdByUser(user);
+    }
+
     public boolean deleteById(Long id){
         if (adDAO.existsById(id)){
             adDAO.deleteById(id);

@@ -2,6 +2,7 @@ package fr.picom.picomspring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -90,7 +91,7 @@ public class Stop {
                 ", name='" + name + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", area=" + area +
+                /*", area=" + area +*/
                 ", adressIp='" + adressIp + '\'' +
                 '}';
     }

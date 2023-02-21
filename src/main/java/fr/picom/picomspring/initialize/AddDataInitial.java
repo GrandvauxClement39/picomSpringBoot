@@ -7,6 +7,7 @@ import fr.picom.picomspring.dao.*;
 import fr.picom.picomspring.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -57,15 +58,15 @@ public class AddDataInitial implements CommandLineRunner {
 
     public void addRoleAndUser(){
         List<City> cityList = cityDAO.findAll();
-        Role admin = new Role("Admin");
+        Role admin = new Role("ROLE_ADMIN");
         roleDAO.save(admin);
-        Role customer = new Role("Customer");
+        Role customer = new Role("ROLE_CUSTOMER");
         roleDAO.save(customer);
         User adminUser = new User();
         adminUser.setRole(admin);
         adminUser.setCity(cityList.get(random.nextInt(cityList.size())));
         adminUser.setEmail("admin@admin.com");
-        adminUser.setPassword("Admin123");
+        adminUser.setPassword(new BCryptPasswordEncoder().encode("Admin123"));
         adminUser.setFirstName("Admin");
         adminUser.setLastName("Admin");
         adminUser.setCompanyName("AdminCompany");

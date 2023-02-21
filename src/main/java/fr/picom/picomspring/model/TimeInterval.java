@@ -23,7 +23,7 @@ public class TimeInterval {
     @NotNull
     private Double coefMulti;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToMany(mappedBy = "timeIntervalList")
     private List<AdArea> adList;
 

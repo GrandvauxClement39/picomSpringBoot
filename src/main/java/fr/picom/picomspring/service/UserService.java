@@ -3,6 +3,7 @@ package fr.picom.picomspring.service;
 import fr.picom.picomspring.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -14,7 +15,7 @@ public interface UserService {
 
     User finById(Long id);
 
-    User findByEmail(String name);
+    Optional<User> findByEmail(String name);
 
     boolean deleteById(Long id);
 
