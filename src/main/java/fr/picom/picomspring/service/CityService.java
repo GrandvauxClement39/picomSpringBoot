@@ -4,17 +4,7 @@ import fr.picom.picomspring.model.City;
 
 import java.util.List;
 
-public interface CityService {
-
-    City add(City city);
-
-    List<City> findAll();
-
-    City finById(Long id);
+public interface CityService extends GlobalService<City, Long> {
 
     City findByName(String name);
-
-    boolean deleteById(Long id);
-
-    City update(City City);
 }

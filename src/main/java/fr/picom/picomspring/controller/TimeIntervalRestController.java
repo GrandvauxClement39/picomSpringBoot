@@ -24,7 +24,7 @@ public class TimeIntervalRestController {
 
     @GetMapping("timeInterval/{id}")
     public TimeInterval getTimeIntervalById(@PathVariable Long id){
-        return timeIntervalService.finById(id);
+        return timeIntervalService.findById(id);
     }
 
     @PostMapping("timeInterval")

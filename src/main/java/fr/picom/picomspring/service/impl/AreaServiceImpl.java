@@ -25,7 +25,7 @@ public class AreaServiceImpl implements AreaService {
         return areaDAO.findAll();
     }
 
-    public Area finById(Long id){
+    public Area findById(Long id){
         return areaDAO.findById(id).orElse(null);
     }
 

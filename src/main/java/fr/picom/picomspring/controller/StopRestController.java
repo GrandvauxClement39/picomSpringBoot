@@ -22,7 +22,7 @@ public class StopRestController {
 
     @GetMapping("/stop/{id}")
     public Stop getStopById(@PathVariable Long id){
-        return stopService.finById(id);
+        return stopService.findById(id);
     }
 
     @PostMapping("/stop")

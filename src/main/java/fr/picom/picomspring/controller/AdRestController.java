@@ -27,7 +27,7 @@ public class AdRestController {
 
     @GetMapping("/ad/{id}")
     public Ad getAdById(@PathVariable Long id){
-        return adService.finById(id);
+        return adService.findById(id);
     }
 
     @PostMapping("/ad")

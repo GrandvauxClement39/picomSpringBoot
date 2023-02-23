@@ -5,15 +5,6 @@ import fr.picom.picomspring.model.TimeInterval;
 
 import java.util.List;
 
-public interface TimeIntervalService {
+public interface TimeIntervalService extends GlobalService<TimeInterval, Long> {
 
-    TimeInterval add(TimeInterval timeInterval);
-
-    List<TimeInterval> findAll();
-
-    TimeInterval finById(Long id);
-
-    boolean deleteById(Long id);
-
-    TimeInterval update(TimeInterval timeInterval);
 }

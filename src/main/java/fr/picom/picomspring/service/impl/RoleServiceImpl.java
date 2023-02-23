@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
         return roleDAO.findAll();
     }
 
-    public Role finById(Long id){
+    public Role findById(Long id){
         return roleDAO.findById(id).orElse(null);
     }
 

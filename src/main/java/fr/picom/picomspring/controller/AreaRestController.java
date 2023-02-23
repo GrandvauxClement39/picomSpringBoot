@@ -25,7 +25,7 @@ public class AreaRestController {
 
     @GetMapping("/{id}")
     public Area getAreaById(@PathVariable Long id){
-        return areaService.finById(id);
+        return areaService.findById(id);
     }
 
     @PostMapping("/")
