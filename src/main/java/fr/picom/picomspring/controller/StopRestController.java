@@ -11,38 +11,38 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/stop")
 public class StopRestController {
 
     private StopService stopService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/stop")
+    @GetMapping("")
     public List<Stop> getAllStop(){
         return stopService.findAll();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/stop")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Stop addNewStop(@RequestBody Stop stop){
         return stopService.add(stop);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/stop/{id}")
+    @GetMapping("/{id}")
     public Stop getStopById(@PathVariable Long id){
         return stopService.findById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/stop/{id}")
+    @DeleteMapping("/{id}")
     public boolean deleteStopById(@PathVariable Long id){
         return stopService.deleteById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("/stop")
+    @PatchMapping("")
     public Stop updateStop(@RequestBody Stop stop){
         return stopService.update(stop);
     }

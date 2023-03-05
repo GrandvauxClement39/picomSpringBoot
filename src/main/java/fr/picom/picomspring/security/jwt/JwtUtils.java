@@ -33,7 +33,10 @@ public class JwtUtils {
         if (cookie != null) {
             return cookie.getValue();
         } else {
-            return null;
+            String header = request.getHeader("Authorization");
+            String token = header.split(" ")[1].trim();
+            return token;
+          //  return null;
         }
     }
 

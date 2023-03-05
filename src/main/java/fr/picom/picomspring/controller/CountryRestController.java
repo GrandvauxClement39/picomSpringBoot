@@ -16,7 +16,7 @@ public class CountryRestController {
     private CountryService countryService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/")
+    @GetMapping("")
     public List<Country> getAllCountry(){
         return countryService.findAll();
     }
@@ -28,7 +28,7 @@ public class CountryRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @PostMapping("/")
+    @PostMapping("")
     public Country addNewCountry(@RequestBody Country country){
         return countryService.add(country);
     }
@@ -40,7 +40,7 @@ public class CountryRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @PatchMapping("/")
+    @PatchMapping("")
     public Country updateCountry(@RequestBody Country country){
         return countryService.update(country);
     }

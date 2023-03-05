@@ -19,13 +19,13 @@ public class CityRestController {
     private CityService cityService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/")
+    @GetMapping("")
     public List<City> getAllCity(){
         return cityService.findAll();
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/{name}")
+    @GetMapping("")
     public City findCityByName(@PathVariable String name){
         return cityService.findByName(name);
     }

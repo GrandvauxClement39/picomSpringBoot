@@ -13,40 +13,39 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/")
+@RequestMapping("/api/timeInterval")
 public class TimeIntervalRestController {
 
     private TimeIntervalService timeIntervalService;
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("timeInterval")
+    @GetMapping("")
     public List<TimeInterval> getAllTimeInterval(){
         return timeIntervalService.findAll();
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("timeInterval/{id}")
+    @GetMapping("/{id}")
     public TimeInterval getTimeIntervalById(@PathVariable Long id){
         return timeIntervalService.findById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("timeInterval")
+    @PostMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
     public TimeInterval addNewTimeInterval(@RequestBody TimeInterval timeInterval) {
-        System.out.println("--------------- "+timeInterval);
 
         return timeIntervalService.add(timeInterval);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("timeInterval/{id}")
+    @DeleteMapping("/{id}")
     public boolean deleteTimeIntervalById(@PathVariable Long id){
         return timeIntervalService.deleteById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping("timeInterval")
+    @PatchMapping("")
     public TimeInterval updateTimeInterval(@RequestBody TimeInterval timeInterval){
         return timeIntervalService.update(timeInterval);
     }
