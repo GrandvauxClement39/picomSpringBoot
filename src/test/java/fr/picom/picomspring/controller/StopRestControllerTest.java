@@ -27,20 +27,14 @@ import org.springframework.web.context.WebApplicationContext;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StopRestControllerTest {
-    //TODO rewrite all test
-    //add to component need to use @Autowire in test
     @Autowired
     private WebApplicationContext context;
-
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private AreaService areaService;
-
     @Autowired
     private StopService stopService;
-
     private MockMvc mockMvc;
 
     @Before
@@ -83,7 +77,7 @@ public class StopRestControllerTest {
     @WithMockUser("spring")
     @Test
     public void TestAddingStop() throws Exception{
-        Area area = areaService.finById(1L);
+        Area area = areaService.findById(1L);
         Stop stop = new Stop();
         stop.setName("Test add stop");
         stop.setAdressIp("127.142.157.98");
@@ -106,7 +100,6 @@ public class StopRestControllerTest {
         Stop stop = stopService.findByName("centre-ville-3");
 
         mockMvc.perform(delete("/api/stop/" + stop.getId().toString())
-                        .content(objectMapper.writeValueAsString(stop))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

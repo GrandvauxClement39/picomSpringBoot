@@ -11,10 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 @Component
 @AllArgsConstructor
@@ -58,12 +55,17 @@ public class AddDataInitial implements CommandLineRunner {
 
     public void addRoleAndUser(){
         List<City> cityList = cityDAO.findAll();
-        Role admin = new Role("ROLE_ADMIN");
+        Role admin = new Role(ERole.ROLE_ADMIN);
         roleDAO.save(admin);
-        Role customer = new Role("ROLE_CUSTOMER");
+        Role customer = new Role(ERole.ROLE_CUSTOMER);
         roleDAO.save(customer);
+        Set<Role> rolesSetAdmin = new HashSet<>();
+        rolesSetAdmin.add(admin);
+        rolesSetAdmin.add(customer);
+        Set<Role> rolesSetCustomer = new HashSet<>();
+        rolesSetCustomer.add(customer);
         User adminUser = new User();
-        adminUser.setRole(admin);
+        adminUser.setRoles(rolesSetAdmin);
         adminUser.setCity(cityList.get(random.nextInt(cityList.size())));
         adminUser.setEmail("admin@admin.com");
         adminUser.setPassword(new BCryptPasswordEncoder().encode("Admin123"));
@@ -77,12 +79,31 @@ public class AddDataInitial implements CommandLineRunner {
         adminUser.setVerified(true);
         userDAO.save(adminUser);
 
+        User testCustomer = new User();
+        testCustomer.setRoles(rolesSetCustomer);
+        testCustomer.setCity(cityList.get(random.nextInt(cityList.size())));
+        testCustomer.setEmail("test@test.com");
+        testCustomer.setPassword(new BCryptPasswordEncoder().encode("Admin123"));
+        testCustomer.setFirstName("Customer");
+        testCustomer.setLastName("Test");
+        testCustomer.setCompanyName("AdminCompany");
+        testCustomer.setNumSiret("15986542359428");
+        testCustomer.setPhoneNumber("0629168943");
+        testCustomer.setPostalCode("39210");
+        testCustomer.setRoadName("rue de l'admin");
+        testCustomer.setVerified(true);
+        userDAO.save(testCustomer);
+
         for (int i =0; i<20; i++){
             User user = new User();
-            user.setRole(customer);
+            user.setRoles(rolesSetCustomer);
             user.setCity(cityList.get(random.nextInt(cityList.size())));
-            user.setEmail(fakeValuesService.letterify("?????@gmail.com"));
-            user.setPassword(faker.internet().password(4, 8));
+            String email = fakeValuesService.letterify("?????@gmail.com");
+            user.setEmail(email);
+            String password = faker.internet().password(4, 8);
+            System.out.println("===========================================================================");
+            System.out.println("---------------EMAIL --> "+ email + "PASSWORD --> "+ password);
+            user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setFirstName(faker.name().firstName());
             user.setLastName(faker.name().lastName());
             user.setCompanyName(faker.company().name());

@@ -4,6 +4,7 @@ import fr.picom.picomspring.dao.CityDAO;
 import fr.picom.picomspring.dao.UserDAO;
 import fr.picom.picomspring.model.City;
 import fr.picom.picomspring.model.Country;
+import fr.picom.picomspring.model.Role;
 import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.service.CityService;
 import fr.picom.picomspring.service.CountryService;
@@ -12,8 +13,10 @@ import fr.picom.picomspring.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -47,9 +50,11 @@ public class UserServiceImpl implements UserService {
             }
             user.setCity(city);
         }
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.findById(2L));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         System.out.println("Je suis juste avant ajout user -------------------");
-        user.setRole(roleService.finById(2L));
+        user.setRoles(roles);
         return userDAO.save(user);
     }
 
@@ -58,6 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findAll() {
+        System.out.println("************************************** USER SERVICE FIND ALL ***************************");
         return userDAO.findAll();
     }
 

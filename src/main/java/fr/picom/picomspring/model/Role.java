@@ -9,29 +9,25 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private ERole name;
 
-    @OneToMany(mappedBy = "role")
-    @JsonBackReference
-    private List<User> userList;
+    /*@OneToMany(mappedBy = "role")
+    @JsonIgnore
+    private List<User> userList;*/
 
     public Role(){
 
     }
 
-    public Role(String name) {
-        this.name = name;
-    }
-
-    public Role(Long id, String name) {
-        this.id = id;
+    public Role(ERole name) {
         this.name = name;
     }
 
@@ -43,19 +39,19 @@ public class Role {
         this.id = id;
     }
 
-    public String getName() {
+    public ERole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ERole name) {
         this.name = name;
     }
 
-    @Override
+   /* @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
-    }
+    }*/
 }
