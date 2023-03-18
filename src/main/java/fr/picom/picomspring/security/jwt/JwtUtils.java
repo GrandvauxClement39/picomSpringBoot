@@ -34,20 +34,19 @@ public class JwtUtils {
             return cookie.getValue();
         } else {
             String header = request.getHeader("Authorization");
-            String token = header.split(" ")[1].trim();
-            return token;
-          //  return null;
+            if(header != null){
+                String token = header.split(" ")[1].trim();
+                return token;
+            }
+            return null;
         }
     }
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
-        return cookie;
-    }
-
-    public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
+                .path("/api").maxAge(24 * 60 * 60)
+                .httpOnly(true).build();
         return cookie;
     }
 
@@ -81,5 +80,10 @@ public class JwtUtils {
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
+    }
+
+    public ResponseCookie getCleanJwtCookie() {
+        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
+        return cookie;
     }
 }

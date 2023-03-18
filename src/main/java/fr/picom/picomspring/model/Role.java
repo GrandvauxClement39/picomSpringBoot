@@ -1,12 +1,6 @@
 package fr.picom.picomspring.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -18,10 +12,6 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private ERole name;
-
-    /*@OneToMany(mappedBy = "role")
-    @JsonIgnore
-    private List<User> userList;*/
 
     public Role(){
 
@@ -46,12 +36,4 @@ public class Role {
     public void setName(ERole name) {
         this.name = name;
     }
-
-   /* @Override
-    public String toString() {
-        return "Role{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }*/
 }

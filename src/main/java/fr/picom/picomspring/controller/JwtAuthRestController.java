@@ -1,13 +1,9 @@
 package fr.picom.picomspring.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import com.nimbusds.openid.connect.sdk.UserInfoResponse;
 import fr.picom.picomspring.config.AuthRequest;
 import fr.picom.picomspring.config.AuthResponse;
 import fr.picom.picomspring.exceptions.AuthenticationException;
-import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.security.jwt.AuthTokenFilter;
 import fr.picom.picomspring.security.jwt.JwtUtils;
 import fr.picom.picomspring.security.services.UserDetailsImpl;
@@ -38,36 +34,24 @@ public class JwtAuthRestController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @Autowired
-    private AuthTokenFilter jwtTokenFilter;
-
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request)
-            throws AuthenticationException {
+    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) throws AuthenticationException {
         try {
             Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getEmail(), request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
             ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
-            AuthResponse response = new AuthResponse(
-                    userDetails.getId(),
-                    userDetails.getEmail(),
-                    roles
-            );
+            AuthResponse response = new AuthResponse(userDetails.getId(), userDetails.getEmail(), roles);
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .body(response);
-
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -38,10 +38,8 @@ public class UserDetailsImpl implements UserDetails {
                 .collect(Collectors.toList());
 
         return new UserDetailsImpl(
-                user.getId(),
-                user.getEmail(),
-                user.getPassword(),
-                authorities);
+                user.getId(), user.getEmail(),
+                user.getPassword(), authorities);
     }
 
     @Override

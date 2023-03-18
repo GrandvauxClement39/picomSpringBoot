@@ -25,7 +25,7 @@ public class CityRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("")
+    @GetMapping("/{name}")
     public City findCityByName(@PathVariable String name){
         return cityService.findByName(name);
     }

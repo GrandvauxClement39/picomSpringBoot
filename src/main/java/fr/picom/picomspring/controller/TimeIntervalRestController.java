@@ -2,13 +2,10 @@ package fr.picom.picomspring.controller;
 
 import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.service.TimeIntervalService;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.Time;
 import java.util.List;
 
 @RestController

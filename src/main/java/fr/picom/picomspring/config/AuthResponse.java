@@ -1,9 +1,6 @@
 package fr.picom.picomspring.config;
 
-import fr.picom.picomspring.model.Role;
-
 import java.util.List;
-import java.util.Set;
 
 public class AuthResponse {
     private Long id;
