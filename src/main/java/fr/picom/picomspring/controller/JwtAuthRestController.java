@@ -4,23 +4,16 @@ import javax.validation.Valid;
 import fr.picom.picomspring.config.AuthRequest;
 import fr.picom.picomspring.config.AuthResponse;
 import fr.picom.picomspring.exceptions.AuthenticationException;
-import fr.picom.picomspring.security.jwt.AuthTokenFilter;
 import fr.picom.picomspring.security.jwt.JwtUtils;
 import fr.picom.picomspring.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +27,8 @@ public class JwtAuthRestController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) throws AuthenticationException {
+    @PostMapping("/auth/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) throws AuthenticationException {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
