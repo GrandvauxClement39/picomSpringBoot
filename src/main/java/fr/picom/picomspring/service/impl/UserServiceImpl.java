@@ -39,7 +39,6 @@ public class UserServiceImpl implements UserService {
     public User register(User user) {
         if (user.getCity().getId() == null){
             City city = cityService.findByName(user.getCity().getName());
-            System.out.println("city find "+ city);
             if (city == null){
                 Country france = countryService.findByName("France");
                 City newCity = new City();
@@ -52,7 +51,6 @@ public class UserServiceImpl implements UserService {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.findById(2L));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        System.out.println("Je suis juste avant ajout user -------------------");
         user.setRoles(roles);
         return userDAO.save(user);
     }
@@ -62,7 +60,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findAll() {
-        System.out.println("************************************** USER SERVICE FIND ALL ***************************");
         return userDAO.findAll();
     }
 

@@ -48,9 +48,9 @@ public class AdServiceImpl implements AdService {
         }
     }
 
-    public Ad update(Ad Ad){
-        if (adDAO.existsById(Ad.getId())){
-            return adDAO.save(Ad);
+    public Ad update(Ad ad){
+        if (adDAO.existsById(ad.getId())){
+            return adDAO.save(ad);
         } else {
             return null;
         }
