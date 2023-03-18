@@ -24,7 +24,7 @@ public class CityServiceImpl implements CityService {
         return cityDAO.findAll();
     }
 
-    public City finById(Long id){
+    public City findById(Long id){
         return cityDAO.findById(id).orElse(null);
     }
 

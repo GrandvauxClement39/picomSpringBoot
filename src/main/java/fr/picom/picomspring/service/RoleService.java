@@ -10,6 +10,5 @@ public interface RoleService {
 
     List<Role> findAll();
 
-    Role finById(Long id);
-
+    Role findById(Long id);
 }

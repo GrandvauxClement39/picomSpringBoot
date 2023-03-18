@@ -4,17 +4,6 @@ import fr.picom.picomspring.model.Stop;
 
 import java.util.List;
 
-public interface StopService {
-
-    Stop add(Stop stop);
-
-    List<Stop> findAll();
-
-    Stop finById(Long id);
-
+public interface StopService extends GlobalService<Stop, Long> {
     Stop findByName(String name);
-
-    boolean deleteById(Long id);
-
-    Stop update(Stop stop);
 }

@@ -25,7 +25,7 @@ public class CountryServiceImpl implements CountryService {
         return countryDAO.findAll();
     }
 
-    public Country finById(Long id){
+    public Country findById(Long id){
         return countryDAO.findById(id).orElse(null);
     }
 

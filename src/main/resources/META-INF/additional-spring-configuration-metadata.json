@@ -24,5 +24,10 @@
       "name": "jwt.token.expiration.in.seconds",
       "type": "java.lang.String",
       "description": "Description for jwt.token.expiration.in.seconds."
+    },
+    {
+      "name": "app.jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for app.jwt.secret."
     }
   ] }

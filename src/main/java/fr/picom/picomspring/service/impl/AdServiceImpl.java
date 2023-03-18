@@ -26,7 +26,7 @@ public class AdServiceImpl implements AdService {
         return adDAO.findAll();
     }
 
-    public Ad finById(Long id){
+    public Ad findById(Long id){
         return adDAO.findById(id).orElse(null);
     }
 

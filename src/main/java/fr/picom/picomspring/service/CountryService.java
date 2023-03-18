@@ -4,17 +4,7 @@ import fr.picom.picomspring.model.Country;
 
 import java.util.List;
 
-public interface CountryService {
-
-    Country add(Country country);
-
-    List<Country> findAll();
-
-    Country finById(Long id);
+public interface CountryService extends GlobalService<Country, Long>{
 
     Country findByName(String name);
-
-    boolean deleteById(Long id);
-
-    Country update(Country country);
 }

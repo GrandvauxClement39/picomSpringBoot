@@ -1,17 +1,30 @@
 package fr.picom.picomspring.config;
 
+import java.util.List;
+
 public class AuthResponse {
+    private Long id;
     private String email;
-    private String accessToken;
+    private List<String> roles;
 
-    public AuthResponse() { }
-
-    public AuthResponse(String email, String accessToken) {
+    public AuthResponse(Long id, String email) {
+        this.id = id;
         this.email = email;
-        this.accessToken = accessToken;
     }
 
-    // getters and setters are not shown...
+    public AuthResponse(Long id, String email, List<String> roles) {
+        this.id = id;
+        this.email = email;
+        this.roles = roles;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -21,11 +34,11 @@ public class AuthResponse {
         this.email = email;
     }
 
-    public String getAccessToken() {
-        return accessToken;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

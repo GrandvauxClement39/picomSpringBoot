@@ -25,7 +25,7 @@ public class StopServiceImpl implements StopService {
         return stopDAO.findAll();
     }
 
-    public Stop finById(Long id){
+    public Stop findById(Long id){
         return stopDAO.findById(id).orElse(null);
     }
 

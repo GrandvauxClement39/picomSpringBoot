@@ -25,7 +25,7 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
         return timeIntervalDAO.findAll();
     }
 
-    public TimeInterval finById(Long id){
+    public TimeInterval findById(Long id){
         return timeIntervalDAO.findById(id).orElse(null);
     }
 
