@@ -31,8 +31,6 @@ public class UserRestController {
 
     @PostMapping(path = "/auth/register")
     public ResponseEntity<?> register(@RequestBody @Valid User user){
-        User newUser = new User();
-        System.out.println("user"+ user.getCity());
         return ResponseEntity.ok().body(userService.register(user));
     }
 

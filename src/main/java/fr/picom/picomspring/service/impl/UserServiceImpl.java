@@ -1,6 +1,5 @@
 package fr.picom.picomspring.service.impl;
 
-import fr.picom.picomspring.dao.CityDAO;
 import fr.picom.picomspring.dao.UserDAO;
 import fr.picom.picomspring.model.City;
 import fr.picom.picomspring.model.Country;

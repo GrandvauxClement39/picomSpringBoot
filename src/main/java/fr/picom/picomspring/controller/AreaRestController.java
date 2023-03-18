@@ -21,7 +21,6 @@ public class AreaRestController {
     public List<Area> getAllArea(){
 
         List<Area> allArea = areaService.findAll();
-        System.out.println(allArea);
         return allArea;
     }
 

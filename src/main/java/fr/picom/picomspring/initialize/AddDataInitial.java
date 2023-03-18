@@ -369,13 +369,13 @@ public class AddDataInitial implements CommandLineRunner {
         chaussades.setAdressIp(faker.internet().ipV4Address());
         stopDAO.save(chaussades);
 
-        Stop ChapelleDeAgneau = new Stop();
-        ChapelleDeAgneau.setName("Chapelle de l'agneau");
-        ChapelleDeAgneau.setArea(chataigneraie);
-        ChapelleDeAgneau.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        ChapelleDeAgneau.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        ChapelleDeAgneau.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(ChapelleDeAgneau);
+        Stop chapelleDeAgneau = new Stop();
+        chapelleDeAgneau.setName("Chapelle de l'agneau");
+        chapelleDeAgneau.setArea(chataigneraie);
+        chapelleDeAgneau.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
+        chapelleDeAgneau.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
+        chapelleDeAgneau.setAdressIp(faker.internet().ipV4Address());
+        stopDAO.save(chapelleDeAgneau);
 
         Stop lesRoches = new Stop();
         lesRoches.setName("Les Roches");
