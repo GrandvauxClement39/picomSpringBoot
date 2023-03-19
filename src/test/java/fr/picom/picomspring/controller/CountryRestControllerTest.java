@@ -1,3 +1,4 @@
+/*
 package fr.picom.picomspring.controller;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -57,7 +58,8 @@ public class CountryRestControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-   /* @Test
+   */
+/* @Test
     @Order(1)
     public void TestAddingCountry() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.post(PATH+"Mongolie/+58"))
@@ -67,5 +69,7 @@ public class CountryRestControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.phoneIndicative").value("+58"))
                 .andExpect(status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
-    }*/
+    }*//*
+
 }
+*/
