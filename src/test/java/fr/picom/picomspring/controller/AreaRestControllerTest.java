@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import javax.servlet.http.Cookie;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,8 +44,11 @@ public class AreaRestControllerTest {
                 .andDo(print())
                 .andReturn();
         String responseContent = result.getResponse().getContentAsString();
+        Cookie cookie = result.getResponse().getCookie("picom");
+        System.out.println(" ================== COOKIE RECEIVED --> "+cookie);
         JsonNode jsonNode = objectMapper.readTree(responseContent);
-        accessToken = jsonNode.get("accessToken").asText();
+      //  accessToken = jsonNode.get("accessToken").asText();
+        accessToken = cookie.getValue();
     }
     @Test
     public void TestGetAllArea() throws Exception{

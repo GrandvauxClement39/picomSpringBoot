@@ -27,17 +27,18 @@ public class JwtAuthRestController {
     @Autowired
     private JwtUtils jwtUtils;
 
-    @PostMapping("/auth/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) throws AuthenticationException {
+   // @PostMapping("/auth/login")
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) throws AuthenticationException {
         try {
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
+            System.out.println("DNAS AUTH LOGIN !!!! ;à) -->");
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
-
+            System.out.println("Cookie generate !!! "+jwtCookie.toString());
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
