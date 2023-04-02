@@ -125,8 +125,8 @@ public class Ad {
                 ", createdAt=" + createdAt +
                 ", startAt=" + startAt +
                 ", numDaysOfDiffusion=" + numDaysOfDiffusion +
-                ", user=" + user +
-                ", adAreaList=" + adAreaList +
+            //    ", user=" + user +
+             //   ", adAreaList=" + adAreaList +
                 '}';
     }
 }

@@ -11,4 +11,5 @@ public interface AdDAO extends JpaRepository<Ad, Long> {
     List<Ad> findAllByTitleContainsAndUser(String title, User user);
 
     List<Ad> findAdByUser(User user);
+
 }

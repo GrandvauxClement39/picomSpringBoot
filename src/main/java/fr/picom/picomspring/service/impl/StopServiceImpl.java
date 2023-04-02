@@ -49,4 +49,8 @@ public class StopServiceImpl implements StopService {
             return null;
         }
     }
+
+    public Stop findByAddressIp(String addressIp){
+        return stopDAO.findByAddressIp(addressIp);
+    }
 }
