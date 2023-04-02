@@ -77,8 +77,8 @@ public class Stop {
         return addressIp;
     }
 
-    public void setAddressIp(String adressIp) {
-        this.addressIp = adressIp;
+    public void setAddressIp(String addressIp) {
+        this.addressIp = addressIp;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Stop {
                 ", name='" + name + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", adressIp='" + addressIp + '\'' +
+                ", addressIp='" + addressIp + '\'' +
                 '}';
     }
 }

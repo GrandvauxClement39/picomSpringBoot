@@ -1,5 +1,6 @@
 package fr.picom.picomspring.service;
 
+import fr.picom.picomspring.dto.UserDTO;
 import fr.picom.picomspring.model.User;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User register(User user);
+    User register(UserDTO userDTO);
 
     User login(String email, String password);
 

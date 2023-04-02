@@ -45,7 +45,7 @@ public class AreaRestControllerTest {
                 .andReturn();
         String responseContent = result.getResponse().getContentAsString();
         Cookie cookie = result.getResponse().getCookie("picom");
-        System.out.println(" ================== COOKIE RECEIVED --> "+cookie);
+
         JsonNode jsonNode = objectMapper.readTree(responseContent);
       //  accessToken = jsonNode.get("accessToken").asText();
         accessToken = cookie.getValue();
