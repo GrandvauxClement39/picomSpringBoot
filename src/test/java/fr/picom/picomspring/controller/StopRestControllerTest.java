@@ -116,7 +116,7 @@ public class StopRestControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test add stop"))
-                .andExpect(jsonPath("$.adressIp").value("127.142.157.98"))
+                .andExpect(jsonPath("$.addressIp").value("127.142.157.98"))
                 .andDo(print());
     }
 

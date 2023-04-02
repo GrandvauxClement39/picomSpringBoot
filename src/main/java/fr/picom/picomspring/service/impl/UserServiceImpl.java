@@ -1,6 +1,8 @@
 package fr.picom.picomspring.service.impl;
 
 import fr.picom.picomspring.dao.UserDAO;
+import fr.picom.picomspring.dto.UserDTO;
+import fr.picom.picomspring.exceptions.EmailAlreadyExistsException;
 import fr.picom.picomspring.model.City;
 import fr.picom.picomspring.model.Country;
 import fr.picom.picomspring.model.Role;
@@ -9,6 +11,8 @@ import fr.picom.picomspring.service.CityService;
 import fr.picom.picomspring.service.CountryService;
 import fr.picom.picomspring.service.RoleService;
 import fr.picom.picomspring.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,23 +40,44 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
     }
 
-    public User register(User user) {
-        if (user.getCity().getId() == null){
-            City city = cityService.findByName(user.getCity().getName());
+    public User register(UserDTO userDTO) {
+        try {
+            // Check if email already use
+            boolean emailAlreadyUse = userDAO.findByEmail(userDTO.getEmail()).isPresent();
+                  //  .orElseThrow(() -> new EmailAlreadyExistsException("Cet Email est déjà utilisé"));
+            if (emailAlreadyUse) {
+                throw new EmailAlreadyExistsException("Cet Email est déjà utilisé");
+            }
+            City city = cityService.findByName(userDTO.getCity());
+
             if (city == null){
                 Country france = countryService.findByName("France");
                 City newCity = new City();
                 newCity.setCountry(france);
-                newCity.setName(user.getCity().getName());
+                newCity.setName(userDTO.getCity());
                 city = cityService.add(newCity);
             }
+
+            User user = new User();
+            user.setEmail(userDTO.getEmail());
+            user.setFirstName(userDTO.getFirstName());
+            user.setLastName(userDTO.getLastName());
+            user.setRoadName(userDTO.getRoadName());
+            user.setPostalCode(userDTO.getPostalCode());
+            user.setPhoneNumber(userDTO.getPhoneNumber());
+            user.setVerified(false);
+            user.setCompanyName(userDTO.getCompanyName());
+            user.setNumSiret(userDTO.getNumSiret());
             user.setCity(city);
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.findById(2L));
+            user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
+            user.setRoles(roles);
+            return userDAO.save(user);
+        } catch (DataIntegrityViolationException e){
+            throw new IllegalArgumentException("Les champs renseigné sont pas bon");
         }
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleService.findById(2L));
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRoles(roles);
-        return userDAO.save(user);
     }
 
     public User login(String email, String password){

@@ -47,9 +47,7 @@ public class TimeSlotRestControllerTest {
     @WithMockUser(value = "spring", roles = "ADMIN")
     @Test
     public void TestGetTimeSlot() throws Exception{
-        TimeInterval timeInterval = new TimeInterval();
-        timeInterval.setTimeSlot("21-22");
-        timeInterval.setCoefMulti(5.2);
+
         mockMvc.perform(MockMvcRequestBuilders.get(PATH)
                       //  .content(objectMapper.writeValueAsString(timeInterval))
                         .contentType(MediaType.APPLICATION_JSON)
