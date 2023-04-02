@@ -1,11 +1,20 @@
 package fr.picom.picomspring.service.impl;
 
 import fr.picom.picomspring.dao.AdDAO;
+import fr.picom.picomspring.dto.AdAreaDTO;
+import fr.picom.picomspring.dto.AdDTO;
 import fr.picom.picomspring.model.Ad;
+import fr.picom.picomspring.model.AdArea;
+import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.service.AdService;
+import fr.picom.picomspring.service.AreaService;
+import fr.picom.picomspring.service.TimeIntervalService;
+import fr.picom.picomspring.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,12 +22,49 @@ public class AdServiceImpl implements AdService {
 
     private AdDAO adDAO;
 
-    public AdServiceImpl(AdDAO adDAO) {
+    private UserService userService;
+
+    private AreaService areaService;
+
+    private TimeIntervalService timeIntervalService;
+
+    public AdServiceImpl(AdDAO adDAO, UserService userService, AreaService areaService, TimeIntervalService timeIntervalService) {
         super();
         this.adDAO = adDAO;
+        this.userService = userService;
+        this.timeIntervalService = timeIntervalService;
+        this.areaService = areaService;
     }
 
-    public Ad add(Ad ad) {
+    public Ad createNewAd(AdDTO adDto) {
+        Ad ad = new Ad();
+        ad.setText(adDto.getText());
+
+        ad.setImage(adDto.getImage());
+        ad.setUser(userService.finById(adDto.getUserId()));
+        ad.setTitle(adDto.getTitle());
+        ad.setCreatedAt(LocalDate.now());
+        ad.setStartAt(adDto.getStartAt());
+        ad.setNumDaysOfDiffusion(adDto.getNumDaysOfDiffusion());
+
+
+        List<AdArea> adAreaList = new ArrayList<>();
+        for (AdAreaDTO adAreaDTO : adDto.getAdAreaDTOList()){
+            AdArea adArea = new AdArea();
+            adArea.setAd(ad);
+            adArea.setArea(areaService.findById(adAreaDTO.getAreaId()));
+
+            List<TimeInterval> timeIntervalList = new ArrayList<>();
+            for (Long idTimeInterval : adAreaDTO.getTimeIntervalIdList()){
+                timeIntervalList.add(timeIntervalService.findById(idTimeInterval));
+            }
+            adArea.setTimeIntervalList(timeIntervalList);
+
+            adAreaList.add(adArea);
+        }
+
+        ad.setAdAreaList(adAreaList);
+
         return adDAO.save(ad);
     }
 
@@ -54,5 +100,9 @@ public class AdServiceImpl implements AdService {
         } else {
             return null;
         }
+    }
+
+    public Ad add(Ad entity) {
+        return null;
     }
 }

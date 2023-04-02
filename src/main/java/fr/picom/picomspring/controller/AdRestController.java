@@ -1,5 +1,6 @@
 package fr.picom.picomspring.controller;
 
+import fr.picom.picomspring.dto.AdDTO;
 import fr.picom.picomspring.model.Ad;
 import fr.picom.picomspring.service.AdService;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,8 +39,8 @@ public class AdRestController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @PostMapping("/ad")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Ad addNewAd(@RequestBody Ad ad){
-        return adService.add(ad);
+    public Ad addNewAd(@RequestBody AdDTO adDTO){
+        return adService.createNewAd(adDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
