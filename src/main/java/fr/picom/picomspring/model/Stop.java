@@ -28,7 +28,7 @@ public class Stop {
 
     @NotEmpty
     @Pattern(regexp = "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
-    private String adressIp;
+    private String addressIp;
 
     public Stop() {
     }
@@ -73,12 +73,12 @@ public class Stop {
         this.area = area;
     }
 
-    public String getAdressIp() {
-        return adressIp;
+    public String getAddressIp() {
+        return addressIp;
     }
 
-    public void setAdressIp(String adressIp) {
-        this.adressIp = adressIp;
+    public void setAddressIp(String adressIp) {
+        this.addressIp = adressIp;
     }
 
     @Override
@@ -88,8 +88,7 @@ public class Stop {
                 ", name='" + name + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                /*", area=" + area +*/
-                ", adressIp='" + adressIp + '\'' +
+                ", adressIp='" + addressIp + '\'' +
                 '}';
     }
 }

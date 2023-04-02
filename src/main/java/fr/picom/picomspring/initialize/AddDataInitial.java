@@ -5,13 +5,16 @@ import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
 import fr.picom.picomspring.dao.*;
 import fr.picom.picomspring.model.*;
+import fr.picom.picomspring.service.FilesStorageService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -27,6 +30,9 @@ public class AddDataInitial implements CommandLineRunner {
     private final UserDAO userDAO;
     private final AdAreaDao adAreaDao;
 
+    @Autowired
+    private final FilesStorageService filesStorageService;
+
     private static Random random = new Random();
     private static FakeValuesService fakeValuesService = new FakeValuesService(new Locale("fr-FR"), new RandomService());
     private static Faker faker = new Faker(new Locale("fr-FR"));
@@ -40,7 +46,6 @@ public class AddDataInitial implements CommandLineRunner {
             addAreaAndStop();
             addAnnouncement();
         }
-
     }
 
     public void addTimeInterval(){
@@ -101,13 +106,10 @@ public class AddDataInitial implements CommandLineRunner {
             String email = fakeValuesService.letterify("?????@gmail.com");
             user.setEmail(email);
             String password = faker.internet().password(4, 8);
-            System.out.println("===========================================================================");
-            System.out.println("---------------EMAIL --> "+ email + "PASSWORD --> "+ password);
             user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setFirstName(faker.name().firstName());
             user.setLastName(faker.name().lastName());
             user.setCompanyName(faker.company().name());
-          //  System.out.println("-------------TEST--"+faker.number().randomNumber(1000000, true)+ ""+faker.number().randomNumber(1000000, true));
             user.setNumSiret("516846598425"+i);
             user.setPhoneNumber(faker.phoneNumber().phoneNumber());
             user.setPostalCode(faker.address().zipCode());
@@ -117,40 +119,37 @@ public class AddDataInitial implements CommandLineRunner {
         }
     }
 
+    public void generateStop(Area area, String name){
+        Stop stop = new Stop();
+        stop.setName(name);
+        stop.setArea(area);
+        stop.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
+        stop.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
+        stop.setAddressIp(faker.internet().ipV4Address());
+        stopDAO.save(stop);
+    }
+
+    public Area generateArea(String name, Double price){
+        Area area = new Area();
+        area.setName(name);
+        area.setPrice(price);
+        areaDAO.save(area);
+        return area;
+    }
+
     public void addAreaAndStop(){
-        Area centreVille = new Area();
-        centreVille.setName("Centre-ville");
-        centreVille.setPrice(2.80);
-        areaDAO.save(centreVille);
+        Area centreVille = generateArea("Centre-ville", 2.80);
 
-        Area gare = new Area();
-        gare.setName("Gare");
-        gare.setPrice(2.60);
-        areaDAO.save(gare);
+        Area gare = generateArea("Gare", 2.60);
 
-        Area ballainvilliers = new Area();
-        ballainvilliers.setName("Ballainvilliers");
-        ballainvilliers.setPrice(2.30);
-        areaDAO.save(ballainvilliers);
+        Area ballainvilliers = generateArea("Ballainvilliers", 2.30);
 
-        Area chamalieresMairie = new Area();
-        chamalieresMairie.setName("Chamalières Mairie");
-        chamalieresMairie.setPrice(2.10);
-        areaDAO.save(chamalieresMairie);
+        Area chamalieresMairie = generateArea("Chamalières Mairie", 2.10);
 
-        Area chataigneraie = new Area();
-        chataigneraie.setName("Châtaigneraie");
-        chataigneraie.setPrice(1.80);
-        areaDAO.save(chataigneraie);
+        Area chataigneraie = generateArea("Châtaigneraie", 1.80);
 
         for (int i=1; i<6; i++){
-            Stop stopCentre = new Stop();
-            stopCentre.setName("centre-ville-"+i);
-            stopCentre.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-            stopCentre.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-            stopCentre.setArea(centreVille);
-            stopCentre.setAdressIp(faker.internet().ipV4Address());
-            stopDAO.save(stopCentre);
+            generateStop(centreVille, "centre-ville-" + i);
         }
 
         Stop stopGare1 = new Stop();
@@ -158,232 +157,64 @@ public class AddDataInitial implements CommandLineRunner {
         stopGare1.setArea(gare);
         stopGare1.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
         stopGare1.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare1.setAdressIp(faker.internet().ipV4Address());
+        stopGare1.setAddressIp("96.183.38.130");
         stopDAO.save(stopGare1);
 
-        Stop stopGare2 = new Stop();
-        stopGare2.setName("Gare SNCF (quai 2)");
-        stopGare2.setArea(gare);
-        stopGare2.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stopGare2.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare2.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stopGare2);
+        generateStop(gare, "Gare SNCF (quai 2)");
 
-        Stop stopGare3 = new Stop();
-        stopGare3.setName("Gare SNCF (quai 3)");
-        stopGare3.setArea(gare);
-        stopGare3.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stopGare3.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare3.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stopGare3);
+        generateStop(gare, "Gare SNCF (quai 3)");
 
-        Stop stopGare4 = new Stop();
-        stopGare4.setName("Gare SNCF (quai 4)");
-        stopGare4.setArea(gare);
-        stopGare4.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stopGare4.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare4.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stopGare4);
+        generateStop(gare, "Gare SNCF (quai 4)");
 
-        Stop stopGare8 = new Stop();
-        stopGare8.setName("Gare SNCF (quai 8)");
-        stopGare8.setArea(gare);
-        stopGare8.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stopGare8.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare8.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stopGare8);
+        generateStop(gare, "Gare SNCF (quai 8)");
 
-        Stop stopGare9 = new Stop();
-        stopGare9.setName("Gare SNCF (quai 9)");
-        stopGare9.setArea(gare);
-        stopGare9.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stopGare9.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stopGare9.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stopGare9);
+        generateStop(gare, "Gare SNCF (quai 9)");
 
-        Stop esplanade = new Stop();
-        esplanade.setName("Esplanade");
-        esplanade.setArea(gare);
-        esplanade.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        esplanade.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        esplanade.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(esplanade);
+        generateStop(gare, "Esplanade");
 
-        Stop carnot = new Stop();
-        carnot.setName("Carnot");
-        carnot.setArea(gare);
-        carnot.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        carnot.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        carnot.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(carnot);
+        generateStop(gare, "Carnot");
 
-        Stop fleury = new Stop();
-        fleury.setName("Fleury");
-        fleury.setArea(gare);
-        fleury.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        fleury.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        fleury.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(fleury);
+        generateStop(gare, "Fleury");
 
-        Stop cartoucherie = new Stop();
-        cartoucherie.setName("Cartoucherie");
-        cartoucherie.setArea(gare);
-        cartoucherie.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        cartoucherie.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        cartoucherie.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(cartoucherie);
+        generateStop(gare, "Cartoucherie");
 
-        Stop vertaizon = new Stop();
-        vertaizon.setName("Vertaizon");
-        vertaizon.setArea(gare);
-        vertaizon.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        vertaizon.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        vertaizon.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(vertaizon);
+        generateStop(gare, "Vertaizon");
 
-        Stop hotelVille = new Stop();
-        hotelVille.setName("Hôtel de ville");
-        hotelVille.setArea(ballainvilliers);
-        hotelVille.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        hotelVille.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        hotelVille.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(hotelVille);
+        generateStop(ballainvilliers, "Hôtel de ville");
 
-        Stop gaillard = new Stop();
-        gaillard.setName("Gaillard");
-        gaillard.setArea(ballainvilliers);
-        gaillard.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        gaillard.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        gaillard.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(gaillard);
+        generateStop(ballainvilliers, "Gaillard");
 
-        Stop jaude = new Stop();
-        jaude.setName("Jaude");
-        jaude.setArea(ballainvilliers);
-        jaude.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        jaude.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        jaude.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(jaude);
+        generateStop(ballainvilliers, "Jaude");
 
-        Stop lagarlaye = new Stop();
-        lagarlaye.setName("Lagarlaye");
-        lagarlaye.setArea(ballainvilliers);
-        lagarlaye.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        lagarlaye.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        lagarlaye.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(lagarlaye);
+        generateStop(ballainvilliers, "Lagarlaye");
 
-        Stop ballaivilliers = new Stop();
-        ballaivilliers.setName("Ballaivilliers");
-        ballaivilliers.setArea(ballainvilliers);
-        ballaivilliers.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        ballaivilliers.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        ballaivilliers.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(ballaivilliers);
+        generateStop(ballainvilliers, "Ballaivilliers");
 
-        Stop michelDeHospital = new Stop();
-        michelDeHospital.setName("Michel de l Hospital");
-        michelDeHospital.setArea(ballainvilliers);
-        michelDeHospital.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        michelDeHospital.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        michelDeHospital.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(michelDeHospital);
+        generateStop(ballainvilliers, "Michel de l Hospital");
 
-        Stop plRoyale = new Stop();
-        plRoyale.setName("Pl. Royale");
-        plRoyale.setArea(ballainvilliers);
-        plRoyale.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        plRoyale.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        plRoyale.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(plRoyale);
+        generateStop(ballainvilliers, "Pl. Royale");
 
-        Stop julesGuesde = new Stop();
-        julesGuesde.setName("Jules Guesde");
-        julesGuesde.setArea(chamalieresMairie);
-        julesGuesde.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        julesGuesde.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        julesGuesde.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(julesGuesde);
+        generateStop(chamalieresMairie, "Jules Guesde");
 
-        Stop stAndre = new Stop();
-        stAndre.setName("St André");
-        stAndre.setArea(chamalieresMairie);
-        stAndre.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        stAndre.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        stAndre.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(stAndre);
+        generateStop(chamalieresMairie, "St André");
 
-        Stop chamalieresMairieStop = new Stop();
-        chamalieresMairieStop.setName("Chamalières Mairie");
-        chamalieresMairieStop.setArea(chamalieresMairie);
-        chamalieresMairieStop.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        chamalieresMairieStop.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        chamalieresMairieStop.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(chamalieresMairieStop);
+        generateStop(chamalieresMairie, "Chamalières Mairie");
 
-        Stop parcMontjoly = new Stop();
-        parcMontjoly.setName("Parc Montjoly");
-        parcMontjoly.setArea(chamalieresMairie);
-        parcMontjoly.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        parcMontjoly.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        parcMontjoly.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(parcMontjoly);
+        generateStop(chamalieresMairie, "Parc Montjoly");
 
-        Stop europe = new Stop();
-        europe.setName("Europe");
-        europe.setArea(chamalieresMairie);
-        europe.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        europe.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        europe.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(europe);
+        generateStop(chamalieresMairie, "Europe");
 
-        Stop fontmaureEurope = new Stop();
-        fontmaureEurope.setName("Fontmaure Europe");
-        fontmaureEurope.setArea(chamalieresMairie);
-        fontmaureEurope.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        fontmaureEurope.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        fontmaureEurope.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(fontmaureEurope);
+        generateStop(chamalieresMairie, "Fontmaure Europe");
 
-        Stop teilhardDeChardin = new Stop();
-        teilhardDeChardin.setName("Teilhard de Chardin");
-        teilhardDeChardin.setArea(chamalieresMairie);
-        teilhardDeChardin.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        teilhardDeChardin.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        teilhardDeChardin.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(teilhardDeChardin);
+        generateStop(chamalieresMairie, "Teilhard de Chardin");
 
-        Stop chataigneraieStop = new Stop();
-        chataigneraieStop.setName("Châtaigneraie");
-        chataigneraieStop.setArea(chataigneraie);
-        chataigneraieStop.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        chataigneraieStop.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        chataigneraieStop.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(chataigneraieStop);
+        generateStop(chataigneraie, "Châtaigneraie");
 
-        Stop chaussades = new Stop();
-        chaussades.setName("Chaussades");
-        chaussades.setArea(chataigneraie);
-        chaussades.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        chaussades.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        chaussades.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(chaussades);
+        generateStop(chataigneraie, "Chaussades");
 
-        Stop chapelleDeAgneau = new Stop();
-        chapelleDeAgneau.setName("Chapelle de l'agneau");
-        chapelleDeAgneau.setArea(chataigneraie);
-        chapelleDeAgneau.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        chapelleDeAgneau.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        chapelleDeAgneau.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(chapelleDeAgneau);
+        generateStop(chataigneraie, "Chapelle de l'agneau");
 
-        Stop lesRoches = new Stop();
-        lesRoches.setName("Les Roches");
-        lesRoches.setArea(chataigneraie);
-        lesRoches.setLatitude(Double.parseDouble(faker.address().latitude().replace(',','.')));
-        lesRoches.setLongitude(Double.parseDouble(faker.address().longitude().replace(',', '.')));
-        lesRoches.setAdressIp(faker.internet().ipV4Address());
-        stopDAO.save(lesRoches);
+        generateStop(chataigneraie, "Les Roches");
     }
 
     public void addCountryAndCity(){
@@ -424,26 +255,34 @@ public class AddDataInitial implements CommandLineRunner {
         List<TimeInterval> timeIntervalList = timeIntervalDAO.findAll();
         List<Area> areaList = areaDAO.findAll();
         List<User> userList = userDAO.findAll();
+        List<String> imageList = filesStorageService.loadAll().map(path -> path.getFileName().toString()).toList();
 
-        for (int i =1; i<50; i++){
+        for (int i = 1; i < 300; i++){
             Ad ad = new Ad();
-            ad.setCreatedAt(LocalDate.now());
-            ad.setStartAt(LocalDate.now().plusDays(i));
-            ad.setNumDaysOfDiffusion(i);
-            ad.setTitle("Annonce num "+i);
-            ad.setUser(userList.get(random.nextInt(userList.size())));
-            if (i%2 == 0){
-                ad.setImage("https://thumbor.5euros.com/unsafe/fit-in/630x354/filters:quality(90):no_upscale()/uploads/media/picture/2020-06-26/4dd0bf2f-3ab7-42c9-ab10-dd0899d11ba7.png");
+            LocalDate createdDate = LocalDate.now().minusDays(random.nextInt(15));
+            ad.setCreatedAt(createdDate);
+            ad.setStartAt(createdDate.plusDays(random.nextInt(20)));
+            ad.setNumDaysOfDiffusion(random.nextInt(30));
+            ad.setTitle("Annonce num " + i);
+            ad.setUser(userList.get(random.nextInt(userList.size() - 1)));
+            if (i % 2 == 0){
+                ad.setImage(imageList.get(random.nextInt(imageList.size() - 1)));
             }else {
-                ad.setText(faker.lorem().paragraph(5));
+                ad.setText(faker.lorem().paragraph(10));
             }
+
             List<AdArea> adAreaList = new ArrayList<>();
             AdArea adArea = new AdArea();
             adArea.setAd(ad);
-            adArea.setArea(areaList.get(random.nextInt(areaList.size())));
+            adArea.setArea(areaList.get(random.nextInt(areaList.size() - 1)));
+
             List<TimeInterval> timeIntervalList1 = new ArrayList<>();
-            timeIntervalList1.add(timeIntervalList.get(random.nextInt(timeIntervalList.size())));
-            timeIntervalList1.add(timeIntervalList.get(random.nextInt(timeIntervalList.size())));
+            int randomIndex = random.nextInt(timeIntervalList.size() - 4);
+            timeIntervalList1.add(timeIntervalList.get(randomIndex));
+            timeIntervalList1.add(timeIntervalList.get(randomIndex + 1));
+            timeIntervalList1.add(timeIntervalList.get(randomIndex + 2));
+            timeIntervalList1.add(timeIntervalList.get(randomIndex + 3));
+
             adArea.setTimeIntervalList(timeIntervalList1);
             ad.setAdAreaList(adAreaList);
             adDAO.save(ad);

@@ -59,7 +59,10 @@ public class WebSecurityConfig {
                 .authorizeRequests().antMatchers("/auth/**").permitAll()
                 .antMatchers("/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html").permitAll()
+                        "/swagger-ui.html",
+                        "/pi-point/**",
+                        "/assets/**"
+                ).permitAll()
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

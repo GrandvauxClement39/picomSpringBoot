@@ -7,5 +7,5 @@ public interface StopDAO extends JpaRepository<Stop, Long> {
 
     Stop findByName(String name);
 
-    Stop findByAdressIp(String adressIp);
+    Stop findByAddressIp(String addressIp);
 }

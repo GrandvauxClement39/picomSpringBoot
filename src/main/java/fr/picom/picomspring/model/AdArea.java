@@ -66,7 +66,6 @@ public class AdArea {
                 "id=" + id +
                 ", ad=" + ad +
                 ", area=" + area +
-                ", timeIntervalList=" + timeIntervalList +
                 '}';
     }
 }

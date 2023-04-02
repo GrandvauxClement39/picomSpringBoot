@@ -1,6 +1,5 @@
 package fr.picom.picomspring.controller;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -66,7 +65,6 @@ public class StopRestControllerTest {
                 .andReturn();
         String responseContent = result.getResponse().getContentAsString();
         Cookie cookie = result.getResponse().getCookie("picom");
-        System.out.println(" ================== COOKIE RECEIVED --> "+cookie);
         JsonNode jsonNode = objectMapper.readTree(responseContent);
         //  accessToken = jsonNode.get("accessToken").asText();
         accessToken = cookie.getValue();
@@ -108,7 +106,7 @@ public class StopRestControllerTest {
         Area area = areaService.findById(1L);
         Stop stop = new Stop();
         stop.setName("Test add stop");
-        stop.setAdressIp("127.142.157.98");
+        stop.setAddressIp("127.142.157.98");
         stop.setLatitude(20.787031);
         stop.setLongitude(-12.095555);
         stop.setArea(area);
