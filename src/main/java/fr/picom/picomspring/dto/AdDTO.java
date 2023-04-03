@@ -37,6 +37,17 @@ public class AdDTO {
     public AdDTO() {
     }
 
+    public AdDTO(String title, String image, String text, LocalDate createdAt, LocalDate startAt, Integer numDaysOfDiffusion, Long userId, List<AdAreaDTO> adAreaDTOList) {
+        this.title = title;
+        this.image = image;
+        this.text = text;
+        this.createdAt = createdAt;
+        this.startAt = startAt;
+        this.numDaysOfDiffusion = numDaysOfDiffusion;
+        this.userId = userId;
+        this.adAreaDTOList = adAreaDTOList;
+    }
+
     public String getTitle() {
         return title;
     }

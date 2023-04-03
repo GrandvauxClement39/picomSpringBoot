@@ -3,19 +3,23 @@ package fr.picom.picomspring.service.impl;
 import fr.picom.picomspring.dao.AdDAO;
 import fr.picom.picomspring.dto.AdAreaDTO;
 import fr.picom.picomspring.dto.AdDTO;
+import fr.picom.picomspring.exceptions.FileUploadException;
 import fr.picom.picomspring.model.Ad;
 import fr.picom.picomspring.model.AdArea;
 import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.model.User;
-import fr.picom.picomspring.service.AdService;
-import fr.picom.picomspring.service.AreaService;
-import fr.picom.picomspring.service.TimeIntervalService;
-import fr.picom.picomspring.service.UserService;
+import fr.picom.picomspring.service.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdServiceImpl implements AdService {
@@ -28,19 +32,43 @@ public class AdServiceImpl implements AdService {
 
     private TimeIntervalService timeIntervalService;
 
-    public AdServiceImpl(AdDAO adDAO, UserService userService, AreaService areaService, TimeIntervalService timeIntervalService) {
+    private FilesStorageService filesStorageService;
+
+    public AdServiceImpl(AdDAO adDAO, UserService userService, AreaService areaService, TimeIntervalService timeIntervalService, FilesStorageService filesStorageService) {
         super();
         this.adDAO = adDAO;
         this.userService = userService;
         this.timeIntervalService = timeIntervalService;
         this.areaService = areaService;
+        this.filesStorageService = filesStorageService;
     }
 
-    public Ad createNewAd(AdDTO adDto) {
+    public Ad createNewAd(AdDTO adDto, MultipartFile file) {
+
         Ad ad = new Ad();
         ad.setText(adDto.getText());
 
-        ad.setImage(adDto.getImage());
+        try {
+            if (file != null) {
+                String originalFilename = file.getOriginalFilename();
+                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+
+                // Générer un nouvel identifiant unique pour le nouveau nom de fichier
+                String newFilename = UUID.randomUUID().toString() + extension;
+
+                // Créer un nouveau fichier avec le nouveau nom de fichier généré
+                File newFile = new File(newFilename);
+
+                // Copier les données du fichier d'origine vers le nouveau fichier
+               // file.transferTo(newFile);
+                filesStorageService.save(file);
+                ad.setImage(file.getOriginalFilename());
+            }
+        } catch (FileUploadException e){
+            System.out.println("EXCEPTION --> " + e);
+            //  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
+        }
+        //  ad.setImage(adDto.getImage());
         ad.setUser(userService.finById(adDto.getUserId()));
         ad.setTitle(adDto.getTitle());
         ad.setCreatedAt(LocalDate.now());
