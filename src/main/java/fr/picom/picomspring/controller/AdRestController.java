@@ -34,7 +34,7 @@ public class AdRestController {
     public Ad testImage(
             @RequestParam("title") String title,
             @RequestParam("file") MultipartFile file,
-            @RequestParam("userId") Long id,
+            @RequestParam("userId") Long userId,
             @RequestParam("text") String text,
             @RequestParam("startAt") String localDate,
             @RequestParam("numDaysOfDiffusion") Integer numDaysOfDiffusion,
@@ -44,7 +44,7 @@ public class AdRestController {
         List<AdAreaDTO> adAreaDTOList = objectMapper.readValue(adAreaDTOString, new TypeReference<List<AdAreaDTO>>() {});
 
         LocalDate startAt = LocalDate.parse(localDate);
-        AdDTO adDTO = new AdDTO(title, null, text, LocalDate.now(), startAt, numDaysOfDiffusion, id, adAreaDTOList);
+        AdDTO adDTO = new AdDTO(title, null, text, LocalDate.now(), startAt, numDaysOfDiffusion, userId, adAreaDTOList);
         /*List<AdAreaDTO> adAreaDTOList = new ArrayList<>();
         AdAreaDTO adAreaDTO = new AdAreaDTO();
         adAreaDTO.setAreaId(1L);

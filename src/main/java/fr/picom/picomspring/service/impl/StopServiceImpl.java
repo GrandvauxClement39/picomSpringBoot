@@ -28,11 +28,9 @@ public class StopServiceImpl implements StopService {
     public Stop findById(Long id){
         return stopDAO.findById(id).orElse(null);
     }
-
     public Stop findByName(String name){
         return stopDAO.findByName(name);
     }
-
     public boolean deleteById(Long id){
         if (stopDAO.existsById(id)){
             stopDAO.deleteById(id);

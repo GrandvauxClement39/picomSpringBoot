@@ -2,15 +2,13 @@ package fr.picom.picomspring.service.impl;
 
 import fr.picom.picomspring.exceptions.FileUploadException;
 import fr.picom.picomspring.service.FilesStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
@@ -35,9 +33,12 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public void save(MultipartFile file, String newFilename) {
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+
+            // Obtenir un nouveau Path avec le nouveau nom de fichier
+            Path newFilePath = this.root.resolve(newFilename);
+            Files.copy(file.getInputStream(), newFilePath);
         } catch (Exception e) {
             if (e instanceof FileAlreadyExistsException) {
                 throw new FileUploadException("A file of that name already exists.");
@@ -47,26 +48,13 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         }
     }
 
-   /* public MultipartFile renameFile(MultipartFile file) throws IOException {
-        // Générer un nom de fichier aléatoire avec une extension similaire à celle du fichier original
+    @Override
+    public String generateNewFileName(MultipartFile file){
         String originalFilename = file.getOriginalFilename();
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
         String randomId = UUID.randomUUID().toString();
-        String newFilename = randomId + fileExtension;
-
-        // Créer un nouveau fichier avec le nouveau nom
-        File newFile = new File(newFilename);
-        // Copier le contenu du fichier original vers le nouveau fichier
-        FileUtils.copyInputStreamToFile(file.getInputStream(), newFile);
-
-        // Créer un nouvel objet MultipartFile à partir du nouveau fichier et le retourner
-        return new MockMultipartFile(
-                file.getName(),
-                file.getOriginalFilename(),
-                file.getContentType(),
-                new FileInputStream(newFile)
-        );
-    }*/
+        return randomId + fileExtension;
+    }
 
     @Override
     public Resource load(String filename) {

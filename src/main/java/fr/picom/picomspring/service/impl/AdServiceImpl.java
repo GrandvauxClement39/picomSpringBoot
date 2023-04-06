@@ -47,34 +47,22 @@ public class AdServiceImpl implements AdService {
 
         Ad ad = new Ad();
         ad.setText(adDto.getText());
-
         try {
             if (file != null) {
-                String originalFilename = file.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-
                 // Générer un nouvel identifiant unique pour le nouveau nom de fichier
-                String newFilename = UUID.randomUUID().toString() + extension;
-
-                // Créer un nouveau fichier avec le nouveau nom de fichier généré
-                File newFile = new File(newFilename);
-
-                // Copier les données du fichier d'origine vers le nouveau fichier
-               // file.transferTo(newFile);
-                filesStorageService.save(file);
-                ad.setImage(file.getOriginalFilename());
+                String newFilename = filesStorageService.generateNewFileName(file);
+                filesStorageService.save(file, newFilename);
+                ad.setImage(newFilename);
             }
         } catch (FileUploadException e){
-            System.out.println("EXCEPTION --> " + e);
-            //  return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
+            throw new FileUploadException("Problème lors du téléchargement du fichier");
         }
-        //  ad.setImage(adDto.getImage());
+
         ad.setUser(userService.finById(adDto.getUserId()));
         ad.setTitle(adDto.getTitle());
         ad.setCreatedAt(LocalDate.now());
         ad.setStartAt(adDto.getStartAt());
         ad.setNumDaysOfDiffusion(adDto.getNumDaysOfDiffusion());
-
 
         List<AdArea> adAreaList = new ArrayList<>();
         for (AdAreaDTO adAreaDTO : adDto.getAdAreaDTOList()){
