@@ -35,7 +35,6 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public void save(MultipartFile file, String newFilename) {
         try {
-
             // Obtenir un nouveau Path avec le nouveau nom de fichier
             Path newFilePath = this.root.resolve(newFilename);
             Files.copy(file.getInputStream(), newFilePath);
@@ -84,5 +83,10 @@ public class FilesStorageServiceImpl implements FilesStorageService {
         } catch (IOException e) {
             throw new RuntimeException("Could not load the files!");
         }
+    }
+
+    @Override
+    public void deleteByName(String name){
+        FileSystemUtils.deleteRecursively(this.root.resolve(name).toFile());
     }
 }

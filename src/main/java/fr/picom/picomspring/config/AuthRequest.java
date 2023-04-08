@@ -15,7 +15,9 @@ public class AuthRequest {
 
     // getters and setters are not shown...
 
-    public AuthRequest() {
+    public AuthRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {

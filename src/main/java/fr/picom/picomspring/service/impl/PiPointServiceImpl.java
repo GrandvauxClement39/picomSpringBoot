@@ -1,7 +1,6 @@
 package fr.picom.picomspring.service.impl;
 
 import fr.picom.picomspring.dao.AdAreaDao;
-import fr.picom.picomspring.dao.AreaDAO;
 import fr.picom.picomspring.dao.StopDAO;
 import fr.picom.picomspring.dao.TimeIntervalDAO;
 import fr.picom.picomspring.model.Ad;

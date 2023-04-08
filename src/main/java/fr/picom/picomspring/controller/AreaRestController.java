@@ -1,5 +1,6 @@
 package fr.picom.picomspring.controller;
 
+import fr.picom.picomspring.dto.AreaDTO;
 import fr.picom.picomspring.model.Area;
 import fr.picom.picomspring.service.AreaService;
 import lombok.AllArgsConstructor;
@@ -20,8 +21,7 @@ public class AreaRestController {
     @GetMapping("")
     public List<Area> getAllArea(){
 
-        List<Area> allArea = areaService.findAll();
-        return allArea;
+        return areaService.findAll();
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
@@ -33,7 +33,12 @@ public class AreaRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Area addNewArea(@RequestBody Area area){
+    public Area addNewArea(@RequestBody AreaDTO areaDTO){
+
+        Area area = new Area();
+        area.setName(areaDTO.getName());
+        area.setPrice(areaDTO.getPrice());
+
         return areaService.add(area);
     }
 

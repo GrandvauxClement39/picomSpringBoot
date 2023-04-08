@@ -31,7 +31,17 @@ public class UserDTO {
 
     private String city;
 
-    public UserDTO() {
+    public UserDTO(String lastName, String firstName, String email, String password, String phoneNumber, String numSiret, String companyName, String roadName, String postalCode, String city) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.numSiret = numSiret;
+        this.companyName = companyName;
+        this.roadName = roadName;
+        this.postalCode = postalCode;
+        this.city = city;
     }
 
     public String getLastName() {

@@ -79,17 +79,10 @@ public class UserRestControllerTest {
 
     @Test
     public void TestRegister() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("testeur@test.com");
-        userDTO.setPassword("Admin123");
-        userDTO.setLastName("Test");
-        userDTO.setFirstName("Test");
-        userDTO.setPhoneNumber("0606060606");
-        userDTO.setNumSiret("12345678912345");
-        userDTO.setCompanyName("Test company");
-        userDTO.setRoadName("rue du test");
-        userDTO.setPostalCode("69001");
-        userDTO.setCity("Clermont-Ferrand");
+        UserDTO userDTO = new UserDTO("Test", "Test", "testeur@test.com", "Admin123",
+                "0606060606", "12345678912345", "Test company","rue du test",
+                "69001", "Clermont-Ferrand"
+        );
 
         mockMvc.perform(post("/auth/register")
                         .content(objectMapper.writeValueAsString(userDTO))
@@ -102,17 +95,10 @@ public class UserRestControllerTest {
 
     @Test
     public void TestRegisterWithEmailAlreadyUse() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail("admin@admin.com");
-        userDTO.setPassword("Admin123");
-        userDTO.setLastName("Test");
-        userDTO.setFirstName("Test");
-        userDTO.setPhoneNumber("0606060606");
-        userDTO.setNumSiret("12345678912345");
-        userDTO.setCompanyName("Test company");
-        userDTO.setRoadName("rue du test");
-        userDTO.setPostalCode("69001");
-        userDTO.setCity("Clermont-Ferrand");
+        UserDTO userDTO = new UserDTO("Test", "Test", "admin@admin.com", "Admin123",
+                "0606060606", "12345678912345", "Test company","rue du test",
+                "69001", "Clermont-Ferrand"
+        );
 
         mockMvc.perform(post("/auth/register")
                         .content(objectMapper.writeValueAsString(userDTO))

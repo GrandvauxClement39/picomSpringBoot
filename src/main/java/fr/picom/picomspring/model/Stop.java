@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
+@Table(name = "stop", uniqueConstraints = @UniqueConstraint(columnNames = "addressIp"))
 public class Stop {
 
     @Id

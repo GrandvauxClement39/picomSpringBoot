@@ -52,6 +52,7 @@ public class AdServiceImpl implements AdService {
                 // Générer un nouvel identifiant unique pour le nouveau nom de fichier
                 String newFilename = filesStorageService.generateNewFileName(file);
                 filesStorageService.save(file, newFilename);
+                filesStorageService.deleteByName("test");
                 ad.setImage(newFilename);
             }
         } catch (FileUploadException e){
