@@ -1,5 +1,6 @@
 package fr.picom.picomspring.service.impl;
 
+import fr.picom.picomspring.dao.AdAreaDao;
 import fr.picom.picomspring.dao.AdDAO;
 import fr.picom.picomspring.dto.AdAreaDTO;
 import fr.picom.picomspring.dto.AdDTO;
@@ -9,22 +10,19 @@ import fr.picom.picomspring.model.AdArea;
 import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.model.User;
 import fr.picom.picomspring.service.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class AdServiceImpl implements AdService {
 
     private AdDAO adDAO;
+
+    private AdAreaDao adAreaDao;
 
     private UserService userService;
 
@@ -34,13 +32,14 @@ public class AdServiceImpl implements AdService {
 
     private FilesStorageService filesStorageService;
 
-    public AdServiceImpl(AdDAO adDAO, UserService userService, AreaService areaService, TimeIntervalService timeIntervalService, FilesStorageService filesStorageService) {
+    public AdServiceImpl(AdDAO adDAO, UserService userService, AreaService areaService, TimeIntervalService timeIntervalService, FilesStorageService filesStorageService, AdAreaDao adAreaDao) {
         super();
         this.adDAO = adDAO;
         this.userService = userService;
         this.timeIntervalService = timeIntervalService;
         this.areaService = areaService;
         this.filesStorageService = filesStorageService;
+        this.adAreaDao = adAreaDao;
     }
 
     public Ad createNewAd(AdDTO adDto, MultipartFile file) {
@@ -59,16 +58,19 @@ public class AdServiceImpl implements AdService {
             throw new FileUploadException("Problème lors du téléchargement du fichier");
         }
 
-        ad.setUser(userService.finById(adDto.getUserId()));
+        ad.setUser(userService.findById(adDto.getUserId()));
         ad.setTitle(adDto.getTitle());
         ad.setCreatedAt(LocalDate.now());
         ad.setStartAt(adDto.getStartAt());
         ad.setNumDaysOfDiffusion(adDto.getNumDaysOfDiffusion());
 
+        // Save AD in DB
+        Ad adSave = adDAO.save(ad);
+        // Add AdArea info in DB
         List<AdArea> adAreaList = new ArrayList<>();
         for (AdAreaDTO adAreaDTO : adDto.getAdAreaDTOList()){
             AdArea adArea = new AdArea();
-            adArea.setAd(ad);
+            adArea.setAd(adSave);
             adArea.setArea(areaService.findById(adAreaDTO.getAreaId()));
 
             List<TimeInterval> timeIntervalList = new ArrayList<>();
@@ -77,12 +79,10 @@ public class AdServiceImpl implements AdService {
             }
             adArea.setTimeIntervalList(timeIntervalList);
 
-            adAreaList.add(adArea);
+            adAreaList.add(adAreaDao.save(adArea));
         }
-
-        ad.setAdAreaList(adAreaList);
-
-        return adDAO.save(ad);
+        adSave.setAdAreaList(adAreaList);
+        return adSave;
     }
 
     public List<Ad> findAll() {
@@ -98,8 +98,9 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public List<Ad> findAllByUser(User user) {
-        return adDAO.findAdByUser(user);
+    public List<Ad> findAllByUser(Long id) {
+        User user = userService.findById(id);
+        return adDAO.findAdByUserOrderByCreatedAtDesc(user);
     }
 
     public boolean deleteById(Long id){

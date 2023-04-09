@@ -18,7 +18,7 @@ public class AdArea {
     private Ad ad;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonManagedReference
     private Area area;
 
     @ManyToMany

@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.findAll();
     }
 
-    public User finById(Long id) {
+    public User findById(Long id) {
         return userDAO.findById(id).orElse(null);
     }
 

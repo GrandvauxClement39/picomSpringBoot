@@ -11,7 +11,7 @@ public interface AdService extends GlobalService<Ad, Long> {
 
     List<Ad> filterByUserAndTitleContain(User user, String title);
 
-    List<Ad> findAllByUser(User user);
+    List<Ad> findAllByUser(Long id);
 
     Ad createNewAd(AdDTO adDTO, MultipartFile file);
 }

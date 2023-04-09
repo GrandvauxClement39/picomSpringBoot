@@ -27,7 +27,7 @@ public class UserRestController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @GetMapping("/api/user/{id}")
     public User findUserById(@PathVariable Long id){
-        return userService.finById(id);
+        return userService.findById(id);
     }
 
     @PostMapping(path = "/auth/register")

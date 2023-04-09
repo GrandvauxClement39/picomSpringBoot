@@ -17,7 +17,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    User finById(Long id);
+    User findById(Long id);
 
     Optional<User> findByEmail(String name);
 

@@ -37,7 +37,6 @@ public class Ad {
     private User user;
 
     @OneToMany(mappedBy = "ad")
-    @JsonIgnore
     private List<AdArea> adAreaList;
 
     public Ad() {

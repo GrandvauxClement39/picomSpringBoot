@@ -32,9 +32,9 @@ public class AdRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/user/ads")
-    public List<Ad> getAllAdsByUser(){
-        return adService.findAll();
+    @GetMapping("/ads/user/{id}")
+    public List<Ad> getAllAdsByUser(@PathVariable Long id){
+        return adService.findAllByUser(id);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
