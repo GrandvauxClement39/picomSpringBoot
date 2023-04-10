@@ -1,12 +1,19 @@
 package fr.picom.picomspring.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.picom.picomspring.dto.AdAreaDTO;
+import fr.picom.picomspring.dto.AdDTO;
 import fr.picom.picomspring.model.Ad;
 import fr.picom.picomspring.service.AdService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,6 +23,8 @@ public class AdRestController {
 
     private AdService adService;
 
+    private ObjectMapper objectMapper;
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @GetMapping("/ads")
     public List<Ad> getAllAds(){
@@ -23,9 +32,9 @@ public class AdRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @GetMapping("/user/ads")
-    public List<Ad> getAllAdsByUser(){
-        return adService.findAll();
+    @GetMapping("/ads/user/{id}")
+    public List<Ad> getAllAdsByUser(@PathVariable Long id){
+        return adService.findAllByUser(id);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
@@ -37,8 +46,19 @@ public class AdRestController {
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @PostMapping("/ad")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Ad addNewAd(@RequestBody Ad ad){
-        return adService.add(ad);
+    public Ad addNewAd(@RequestParam("title") String title,
+                       @RequestParam(value = "file", required = false) MultipartFile file,
+                       @RequestParam("userId") Long userId,
+                       @RequestParam(value = "text", required = false) String text,
+                       @RequestParam("startAt") String localDate,
+                       @RequestParam("numDaysOfDiffusion") Integer numDaysOfDiffusion,
+                       @RequestParam("adAreaDTOList") String adAreaDTOString) throws JsonProcessingException {
+
+        List<AdAreaDTO> adAreaDTOList = objectMapper.readValue(adAreaDTOString, new TypeReference<List<AdAreaDTO>>() {});
+
+        LocalDate startAt = LocalDate.parse(localDate);
+        AdDTO adDTO = new AdDTO(title, null, text, LocalDate.now(), startAt, numDaysOfDiffusion, userId, adAreaDTOList);
+        return adService.createNewAd(adDTO, file);
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")

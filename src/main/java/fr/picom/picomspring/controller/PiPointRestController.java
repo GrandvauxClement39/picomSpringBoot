@@ -2,7 +2,6 @@ package fr.picom.picomspring.controller;
 
 
 import fr.picom.picomspring.model.Ad;
-import fr.picom.picomspring.model.AdArea;
 import fr.picom.picomspring.model.Stop;
 import fr.picom.picomspring.service.StopService;
 import fr.picom.picomspring.service.impl.PiPointServiceImpl;
@@ -26,7 +25,7 @@ public class PiPointRestController {
     }
 
     @GetMapping("/stop")
-    public Stop getStopById(@RequestParam String addressIp){
+    public Stop getStopByAddressIp(@RequestParam String addressIp){
         return stopService.findByAddressIp(addressIp);
     }
 }

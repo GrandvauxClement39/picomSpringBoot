@@ -25,7 +25,7 @@ public class Area {
     @JsonManagedReference
     private List<Stop> stopList;
 
-    @OneToMany(mappedBy = "area", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "area", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<AdArea> adAreaList;
 

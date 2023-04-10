@@ -1,5 +1,6 @@
 package fr.picom.picomspring.controller;
 
+import fr.picom.picomspring.dto.TimeIntervalDTO;
 import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.service.TimeIntervalService;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,11 @@ public class TimeIntervalRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public TimeInterval addNewTimeInterval(@RequestBody TimeInterval timeInterval) {
+    public TimeInterval addNewTimeInterval(@RequestBody TimeIntervalDTO timeIntervalDTO) {
 
+        TimeInterval timeInterval = new TimeInterval();
+        timeInterval.setCoefMulti(timeIntervalDTO.getCoefMulti());
+        timeInterval.setTimeSlot(timeIntervalDTO.getTimeSlot());
         return timeIntervalService.add(timeInterval);
     }
 
@@ -43,7 +47,12 @@ public class TimeIntervalRestController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("")
-    public TimeInterval updateTimeInterval(@RequestBody TimeInterval timeInterval){
+    public TimeInterval updateTimeInterval(@RequestBody TimeIntervalDTO timeIntervalDTO){
+        TimeInterval timeInterval = new TimeInterval();
+        timeInterval.setCoefMulti(timeIntervalDTO.getCoefMulti());
+        timeInterval.setTimeSlot(timeIntervalDTO.getTimeSlot());
+        timeInterval.setId(timeIntervalDTO.getId());
+
         return timeIntervalService.update(timeInterval);
     }
 

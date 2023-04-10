@@ -1,53 +1,51 @@
-package fr.picom.picomspring.model;
+package fr.picom.picomspring.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import javax.persistence.*;
+import fr.picom.picomspring.model.AdArea;
+import fr.picom.picomspring.model.User;
+
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-public class Ad {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AdDTO {
 
     @NotEmpty
     private String title;
 
     private String image;
 
-    @Lob
     private String text;
 
     private LocalDate createdAt;
 
-    @NotNull
     private LocalDate startAt;
 
     @NotNull
     private Integer numDaysOfDiffusion;
 
     @NotNull
-    @ManyToOne
-    @JsonBackReference
-    private User user;
+    private Long userId;
 
-    @OneToMany(mappedBy = "ad")
-    private List<AdArea> adAreaList;
+    private List<AdAreaDTO> adAreaDTOList;
 
-    public Ad() {
+    public AdDTO() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public AdDTO(String title, String image, String text, LocalDate createdAt, LocalDate startAt, Integer numDaysOfDiffusion, Long userId, List<AdAreaDTO> adAreaDTOList) {
+        this.title = title;
+        this.image = image;
+        this.text = text;
+        this.createdAt = createdAt;
+        this.startAt = startAt;
+        this.numDaysOfDiffusion = numDaysOfDiffusion;
+        this.userId = userId;
+        this.adAreaDTOList = adAreaDTOList;
     }
 
     public String getTitle() {
@@ -98,34 +96,19 @@ public class Ad {
         this.numDaysOfDiffusion = numDaysOfDiffusion;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public List<AdArea> getAdAreaList() {
-        return adAreaList;
+    public List<AdAreaDTO> getAdAreaDTOList() {
+        return adAreaDTOList;
     }
 
-    public void setAdAreaList(List<AdArea> adAreaList) {
-        this.adAreaList = adAreaList;
-    }
-
-    @Override
-    public String toString() {
-        return "Ad{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", image='" + image + '\'' +
-                ", text='" + text + '\'' +
-                ", createdAt=" + createdAt +
-                ", startAt=" + startAt +
-                ", numDaysOfDiffusion=" + numDaysOfDiffusion +
-            //    ", user=" + user +
-             //   ", adAreaList=" + adAreaList +
-                '}';
+    public void setAdAreaDTOList(List<AdAreaDTO> adAreaDTOList) {
+        this.adAreaDTOList = adAreaDTOList;
     }
 }

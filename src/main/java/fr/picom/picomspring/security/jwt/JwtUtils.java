@@ -35,8 +35,7 @@ public class JwtUtils {
         } else {
             String header = request.getHeader("Authorization");
             if(header != null){
-                String token = header.split(" ")[1].trim();
-                return token;
+                return header.split(" ")[1].trim();
             }
             return null;
         }
@@ -44,10 +43,9 @@ public class JwtUtils {
 
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal) {
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
-                .path("/api").maxAge(24 * 60 * 60)
+        return ResponseCookie.from(jwtCookie, jwt)
+                .path("/api").maxAge(24 * 60 * 60L)
                 .httpOnly(true).build();
-        return cookie;
     }
 
     public String getUserNameFromJwtToken(String token) {
@@ -82,8 +80,7 @@ public class JwtUtils {
                 .compact();
     }
 
-    public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
-        return cookie;
-    }
+   /* public ResponseCookie getCleanJwtCookie() {
+        return ResponseCookie.from(jwtCookie, null).path("/api").build();
+    }*/
 }
