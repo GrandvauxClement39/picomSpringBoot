@@ -25,7 +25,7 @@ public class PiPointRestController {
     }
 
     @GetMapping("/stop")
-    public Stop getStopById(@RequestParam String addressIp){
+    public Stop getStopByAddressIp(@RequestParam String addressIp){
         return stopService.findByAddressIp(addressIp);
     }
 }
