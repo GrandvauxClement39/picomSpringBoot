@@ -2,9 +2,6 @@ package fr.picom.picomspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.picom.picomspring.dto.UserDTO;
-import fr.picom.picomspring.model.City;
-import fr.picom.picomspring.model.User;
-import fr.picom.picomspring.service.CityService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -16,7 +16,7 @@ public class Country {
     private String phoneIndicative;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private List<City> cityList;
 
     public Country() {
