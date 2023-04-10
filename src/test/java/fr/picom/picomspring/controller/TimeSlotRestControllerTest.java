@@ -53,7 +53,7 @@ public class TimeSlotRestControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].timeSlot").value("6-7"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].coefMulti").value(1.8))
-              //  .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 

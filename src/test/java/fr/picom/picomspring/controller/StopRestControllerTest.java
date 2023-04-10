@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import fr.picom.picomspring.dto.StopDTO;
 
 import javax.servlet.http.Cookie;
 
@@ -104,12 +105,7 @@ public class StopRestControllerTest {
     @Test
     public void TestAddingStop() throws Exception{
         Area area = areaService.findById(1L);
-        Stop stop = new Stop();
-        stop.setName("Test add stop");
-        stop.setAddressIp("127.142.157.98");
-        stop.setLatitude(20.787031);
-        stop.setLongitude(-12.095555);
-        stop.setArea(area);
+        StopDTO stop = new StopDTO(null, "Test add stop", 20.787031, -12.095555, 1L, "127.142.157.98");
         mockMvc.perform(post("/api/stop")
                         .content(objectMapper.writeValueAsString(stop))
                         .contentType(MediaType.APPLICATION_JSON)
