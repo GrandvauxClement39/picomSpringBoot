@@ -47,9 +47,9 @@ public class AdRestController {
     @PostMapping("/ad")
     @ResponseStatus(code = HttpStatus.CREATED)
     public Ad addNewAd(@RequestParam("title") String title,
-                       @RequestParam("file") MultipartFile file,
+                       @RequestParam(value = "file", required = false) MultipartFile file,
                        @RequestParam("userId") Long userId,
-                       @RequestParam("text") String text,
+                       @RequestParam(value = "text", required = false) String text,
                        @RequestParam("startAt") String localDate,
                        @RequestParam("numDaysOfDiffusion") Integer numDaysOfDiffusion,
                        @RequestParam("adAreaDTOList") String adAreaDTOString) throws JsonProcessingException {
