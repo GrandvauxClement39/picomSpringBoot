@@ -1,5 +1,6 @@
 package fr.picom.picomspring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.List;
@@ -15,8 +16,8 @@ public class Country {
 
     private String phoneIndicative;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "country", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JsonBackReference
+    @OneToMany(mappedBy = "country")
     private List<City> cityList;
 
     public Country() {
@@ -57,12 +58,4 @@ public class Country {
         this.phoneIndicative = phoneIndicative;
     }
 
-    @Override
-    public String toString() {
-        return "Country{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", phoneIndicative='" + phoneIndicative + '\'' +
-                '}';
-    }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AdAreaDao extends JpaRepository<AdArea, Long> {
 
-    List<AdArea> findAllByAreaAndTimeIntervalListContains(Area area, TimeInterval timeIntervalList);
+    List<AdArea> findAllByAreaAndTimeIntervalListContains(Area area, TimeInterval timeInterval);
 }
