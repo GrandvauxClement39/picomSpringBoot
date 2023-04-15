@@ -33,11 +33,11 @@ public class WebSecurityConfig {
     @Value("${app.cors.piPointUrl}")
     private String piPointUrl;
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+   /* @Autowired
+    UserDetailsServiceImpl userDetailsService;*/
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    /*@Autowired
+    private AuthEntryPointJwt unauthorizedHandler;*/
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -45,7 +45,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider(UserDetailsServiceImpl userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -63,7 +63,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthEntryPointJwt unauthorizedHandler) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -76,7 +76,8 @@ public class WebSecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated();
 
-        http.authenticationProvider(authenticationProvider());
+        UserDetailsServiceImpl userDetailsService = new UserDetailsServiceImpl();
+        http.authenticationProvider(authenticationProvider(userDetailsService));
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

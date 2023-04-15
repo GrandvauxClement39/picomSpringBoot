@@ -38,11 +38,10 @@ public class FilesStorageServiceImpl implements FilesStorageService {
             // Obtenir un nouveau Path avec le nouveau nom de fichier
             Path newFilePath = this.root.resolve(newFilename);
             Files.copy(file.getInputStream(), newFilePath);
-        } catch (Exception e) {
-            if (e instanceof FileAlreadyExistsException) {
-                throw new FileUploadException("A file of that name already exists.");
-            }
+        } catch (FileAlreadyExistsException e) {
 
+            throw new FileUploadException("A file of that name already exists.");
+        } catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -50,9 +49,14 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     @Override
     public String generateNewFileName(MultipartFile file){
         String originalFilename = file.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String randomId = UUID.randomUUID().toString();
-        return randomId + fileExtension;
+        if (originalFilename != null){
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String randomId = UUID.randomUUID().toString();
+            return randomId + fileExtension;
+        } else {
+            throw new IllegalArgumentException("Le nom de fichier original est null !");
+        }
+
     }
 
     @Override

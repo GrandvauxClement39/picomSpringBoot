@@ -35,6 +35,7 @@ public class AdDTO {
     private List<AdAreaDTO> adAreaDTOList;
 
     public AdDTO() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public AdDTO(String title, String image, String text, LocalDate createdAt, LocalDate startAt, Integer numDaysOfDiffusion, Long userId, List<AdAreaDTO> adAreaDTOList) {

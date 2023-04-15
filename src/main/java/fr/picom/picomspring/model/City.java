@@ -29,6 +29,7 @@ public class City {
     private List<User> userList;
 
     public City() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {

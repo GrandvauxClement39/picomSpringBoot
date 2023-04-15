@@ -60,6 +60,7 @@ public class User {
     private List<Ad> adList;
 
     public User() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {

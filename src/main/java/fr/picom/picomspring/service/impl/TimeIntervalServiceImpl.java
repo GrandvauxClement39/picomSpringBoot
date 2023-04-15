@@ -60,16 +60,19 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
     public List<TimeInterval> getTimeIntervalAvailableForArea(Long areaId){
         List<TimeInterval> timeIntervalList = timeIntervalDAO.findAll();
         Area areaSelected = areaDAO.findById(areaId).orElse(null);
-        List<TimeInterval> timeIntervalAvailable = new ArrayList<>();
-        for (TimeInterval timeInterval : timeIntervalList){
-            List<AdArea> adAreaList = adAreaDao.findAllByAreaAndTimeIntervalListContains(areaSelected, timeInterval);
-            if (adAreaList.size() < 6){
-                timeIntervalAvailable.add(timeInterval);
-            } else {
-                System.out.println("************************* ERROR MORe 6 in time interval " + timeInterval.getTimeSlot() + "for area " + areaSelected.getName());
+        if (areaSelected == null){
+            return null;
+        } else {
+            List<TimeInterval> timeIntervalAvailable = new ArrayList<>();
+            for (TimeInterval timeInterval : timeIntervalList) {
+                List<AdArea> adAreaList = adAreaDao.findAllByAreaAndTimeIntervalListContains(areaSelected, timeInterval);
+                if (adAreaList.size() < 6){
+                    timeIntervalAvailable.add(timeInterval);
+                } else {
+                    System.out.println("************************* ERROR MORe 6 in time interval " + timeInterval.getTimeSlot() + "for area " + areaSelected.getName());
+                }
             }
+            return timeIntervalAvailable;
         }
-
-        return timeIntervalAvailable;
     }
 }

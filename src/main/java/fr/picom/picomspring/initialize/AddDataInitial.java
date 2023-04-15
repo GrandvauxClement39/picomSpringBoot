@@ -6,17 +6,19 @@ import com.github.javafaker.service.RandomService;
 import fr.picom.picomspring.dao.*;
 import fr.picom.picomspring.model.*;
 import fr.picom.picomspring.service.FilesStorageService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.*;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AddDataInitial implements CommandLineRunner {
 
     private final AdDAO adDAO;
@@ -29,22 +31,65 @@ public class AddDataInitial implements CommandLineRunner {
     private final UserDAO userDAO;
     private final AdAreaDao adAreaDao;
 
-    @Autowired
+    private final Environment environment;
+
     private final FilesStorageService filesStorageService;
 
     private static Random random = new Random();
     private static FakeValuesService fakeValuesService = new FakeValuesService(new Locale("fr-FR"), new RandomService());
     private static Faker faker = new Faker(new Locale("fr-FR"));
 
+    @Value("${app.adminUser.email}")
+    private String adminEmail;
+
+    @Value("${app.adminUser.password}")
+    private String adminPassword;
+
+    @Value("${app.testCustomer.email}")
+    private String customerEmail;
+
+    @Value("${app.testCustomer.password}")
+    private String customerPassword;
+
+    @PostConstruct
+    private void init() {
+        // Initialiser les champs finals à partir des valeurs injectées par @Value
+        this.adminEmail = adminEmail;
+        this.adminPassword = adminPassword;
+        this.customerEmail = customerEmail;
+        this.customerPassword = customerPassword;
+    }
+
+    // Méthode utilitaire pour vérifier si le profil "production" est actif
+    private boolean isProductionProfileActive() {
+        String[] profiles = environment.getActiveProfiles();
+        for (String profile : profiles) {
+            if ("production".equalsIgnoreCase(profile)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void run(String... args) throws Exception {
-        if (timeIntervalDAO.findAll().size() < 10){
-            addTimeInterval();
-            addCountryAndCity();
-            addRoleAndUser();
-            addAreaAndStop();
-            addAnnouncement();
+        if (isProductionProfileActive()){
+            if (timeIntervalDAO.findAll().size() < 10){
+                addTimeInterval();
+                addCountryAndCity();
+                addRoleAndUser(true);
+                addAreaAndStop();
+            }
+        } else {
+            if (timeIntervalDAO.findAll().size() < 10){
+                addTimeInterval();
+                addCountryAndCity();
+                addRoleAndUser(false);
+                addAreaAndStop();
+                addAnnouncement();
+            }
         }
+
     }
 
     public void addTimeInterval(){
@@ -57,7 +102,7 @@ public class AddDataInitial implements CommandLineRunner {
         }
     }
 
-    public void addRoleAndUser(){
+    public void addRoleAndUser(boolean isProductionMode){
         List<City> cityList = cityDAO.findAll();
         Role admin = new Role(ERole.ROLE_ADMIN);
         roleDAO.save(admin);
@@ -68,11 +113,12 @@ public class AddDataInitial implements CommandLineRunner {
         rolesSetAdmin.add(customer);
         Set<Role> rolesSetCustomer = new HashSet<>();
         rolesSetCustomer.add(customer);
+
         User adminUser = new User();
         adminUser.setRoles(rolesSetAdmin);
         adminUser.setCity(cityList.get(random.nextInt(cityList.size())));
-        adminUser.setEmail("admin@admin.com");
-        adminUser.setPassword(new BCryptPasswordEncoder().encode("Admin123"));
+        adminUser.setEmail(adminEmail);
+        adminUser.setPassword(new BCryptPasswordEncoder().encode(adminPassword));
         adminUser.setFirstName("Admin");
         adminUser.setLastName("Admin");
         adminUser.setCompanyName("AdminCompany");
@@ -83,39 +129,42 @@ public class AddDataInitial implements CommandLineRunner {
         adminUser.setVerified(true);
         userDAO.save(adminUser);
 
-        User testCustomer = new User();
-        testCustomer.setRoles(rolesSetCustomer);
-        testCustomer.setCity(cityList.get(random.nextInt(cityList.size())));
-        testCustomer.setEmail("test@test.com");
-        testCustomer.setPassword(new BCryptPasswordEncoder().encode("Admin123"));
-        testCustomer.setFirstName("Customer");
-        testCustomer.setLastName("Test");
-        testCustomer.setCompanyName("AdminCompany");
-        testCustomer.setNumSiret("15986542359428");
-        testCustomer.setPhoneNumber("0629168943");
-        testCustomer.setPostalCode("39210");
-        testCustomer.setRoadName("rue de l'admin");
-        testCustomer.setVerified(true);
-        userDAO.save(testCustomer);
+        if (!isProductionMode){
+            User testCustomer = new User();
+            testCustomer.setRoles(rolesSetCustomer);
+            testCustomer.setCity(cityList.get(random.nextInt(cityList.size())));
+            testCustomer.setEmail(customerEmail);
+            testCustomer.setPassword(new BCryptPasswordEncoder().encode(customerPassword));
+            testCustomer.setFirstName("Customer");
+            testCustomer.setLastName("Test");
+            testCustomer.setCompanyName("AdminCompany");
+            testCustomer.setNumSiret("15986542359428");
+            testCustomer.setPhoneNumber("0629168943");
+            testCustomer.setPostalCode("39210");
+            testCustomer.setRoadName("rue de l'admin");
+            testCustomer.setVerified(true);
+            userDAO.save(testCustomer);
 
-        for (int i =0; i<20; i++){
-            User user = new User();
-            user.setRoles(rolesSetCustomer);
-            user.setCity(cityList.get(random.nextInt(cityList.size())));
-            String email = fakeValuesService.letterify("?????@gmail.com");
-            user.setEmail(email);
-            String password = faker.internet().password(4, 8);
-            user.setPassword(new BCryptPasswordEncoder().encode(password));
-            user.setFirstName(faker.name().firstName());
-            user.setLastName(faker.name().lastName());
-            user.setCompanyName(faker.company().name());
-            user.setNumSiret("516846598425"+i);
-            user.setPhoneNumber(faker.phoneNumber().phoneNumber());
-            user.setPostalCode(faker.address().zipCode());
-            user.setRoadName(faker.address().streetName());
-            user.setVerified(true);
-            userDAO.save(user);
+            for (int i =0; i<20; i++){
+                User user = new User();
+                user.setRoles(rolesSetCustomer);
+                user.setCity(cityList.get(random.nextInt(cityList.size())));
+                String email = fakeValuesService.letterify("?????@gmail.com");
+                user.setEmail(email);
+                String password = faker.internet().password(4, 8);
+                user.setPassword(new BCryptPasswordEncoder().encode(password));
+                user.setFirstName(faker.name().firstName());
+                user.setLastName(faker.name().lastName());
+                user.setCompanyName(faker.company().name());
+                user.setNumSiret("516846598425"+i);
+                user.setPhoneNumber(faker.phoneNumber().phoneNumber());
+                user.setPostalCode(faker.address().zipCode());
+                user.setRoadName(faker.address().streetName());
+                user.setVerified(true);
+                userDAO.save(user);
+            }
         }
+
     }
 
     public void generateStop(Area area, String name){
@@ -256,12 +305,12 @@ public class AddDataInitial implements CommandLineRunner {
         List<User> userList = userDAO.findAll();
         List<String> imageList = filesStorageService.loadAll().map(path -> path.getFileName().toString()).toList();
 
-        for (int i = 1; i < 300; i++){
+        for (int i = 1; i < 150; i++){
             Ad ad = new Ad();
-            LocalDate createdDate = LocalDate.now().minusDays(random.nextInt(15));
+            LocalDate createdDate = LocalDate.now().minusDays(random.nextInt(7));
             ad.setCreatedAt(createdDate);
-            ad.setStartAt(createdDate.plusDays(random.nextInt(20)));
-            ad.setNumDaysOfDiffusion(random.nextInt(30));
+            ad.setStartAt(createdDate.plusDays(random.nextInt(10)));
+            ad.setNumDaysOfDiffusion(random.nextInt(14));
             ad.setTitle("Annonce num " + i);
             ad.setUser(userList.get(random.nextInt(userList.size() - 1)));
             if (i % 2 == 0){

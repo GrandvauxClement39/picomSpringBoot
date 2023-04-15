@@ -34,5 +34,10 @@
       "name": "app.cors.webappUrl",
       "type": "java.lang.String",
       "description": "Description for app.cors.webappUrl."
+    },
+    {
+      "name": "app.adminUser.email",
+      "type": "java.lang.String",
+      "description": "Description for app.adminUser.email."
     }
   ] }
