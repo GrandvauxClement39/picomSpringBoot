@@ -13,7 +13,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -50,15 +49,6 @@ public class AddDataInitial implements CommandLineRunner {
 
     @Value("${app.testCustomer.password}")
     private String customerPassword;
-
-    @PostConstruct
-    private void init() {
-        // Initialiser les champs finals à partir des valeurs injectées par @Value
-        this.adminEmail = adminEmail;
-        this.adminPassword = adminPassword;
-        this.customerEmail = customerEmail;
-        this.customerPassword = customerPassword;
-    }
 
     // Méthode utilitaire pour vérifier si le profil "production" est actif
     private boolean isProductionProfileActive() {
