@@ -27,24 +27,9 @@ public class CountryRestController {
         return countryService.findByName(name);
     }
 
-    /*@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Country addNewCountry(@RequestBody Country country){
-        return countryService.add(country);
-    }*/
-
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public boolean deleteCountryById(@PathVariable Long id){
         return countryService.deleteById(id);
     }
-
-    /*@PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
-    @PatchMapping("")
-    public Country updateCountry(@RequestBody Country country){
-        return countryService.update(country);
-    }*/
-
-
 }

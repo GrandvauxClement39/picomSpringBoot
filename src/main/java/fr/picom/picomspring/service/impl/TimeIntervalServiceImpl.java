@@ -61,7 +61,7 @@ public class TimeIntervalServiceImpl implements TimeIntervalService {
         List<TimeInterval> timeIntervalList = timeIntervalDAO.findAll();
         Area areaSelected = areaDAO.findById(areaId).orElse(null);
         if (areaSelected == null){
-            return null;
+            return new ArrayList<>();
         } else {
             List<TimeInterval> timeIntervalAvailable = new ArrayList<>();
             for (TimeInterval timeInterval : timeIntervalList) {

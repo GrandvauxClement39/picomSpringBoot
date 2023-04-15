@@ -3,7 +3,6 @@ package fr.picom.picomspring.security;
 import fr.picom.picomspring.security.jwt.AuthEntryPointJwt;
 import fr.picom.picomspring.security.jwt.AuthTokenFilter;
 import fr.picom.picomspring.security.services.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,12 +31,6 @@ public class WebSecurityConfig {
 
     @Value("${app.cors.piPointUrl}")
     private String piPointUrl;
-
-   /* @Autowired
-    UserDetailsServiceImpl userDetailsService;*/
-
-    /*@Autowired
-    private AuthEntryPointJwt unauthorizedHandler;*/
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -91,7 +84,7 @@ public class WebSecurityConfig {
         // Pour autoriser app android --> "android-app://com.example"
         configuration.setAllowedOrigins(Arrays.asList(webappUrl, piPointUrl));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-      //  configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
