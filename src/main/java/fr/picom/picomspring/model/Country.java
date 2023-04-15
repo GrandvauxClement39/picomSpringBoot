@@ -1,7 +1,6 @@
 package fr.picom.picomspring.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Country {
 
     private String phoneIndicative;
 
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "country")
     private List<City> cityList;
 
