@@ -2,6 +2,8 @@ package fr.picom.picomspring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -114,18 +116,4 @@ public class Ad {
         this.adAreaList = adAreaList;
     }
 
-    @Override
-    public String toString() {
-        return "Ad{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", image='" + image + '\'' +
-                ", text='" + text + '\'' +
-                ", createdAt=" + createdAt +
-                ", startAt=" + startAt +
-                ", numDaysOfDiffusion=" + numDaysOfDiffusion +
-            //    ", user=" + user +
-             //   ", adAreaList=" + adAreaList +
-                '}';
-    }
 }

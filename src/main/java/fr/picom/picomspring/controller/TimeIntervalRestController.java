@@ -23,6 +23,12 @@ public class TimeIntervalRestController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
+    @GetMapping("/available-by-area/{idArea}")
+    public List<TimeInterval> getTimeIntervalAvailableByArea(@PathVariable Long idArea){
+        return timeIntervalService.getTimeIntervalAvailableForArea(idArea);
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @GetMapping("/{id}")
     public TimeInterval getTimeIntervalById(@PathVariable Long id){
         return timeIntervalService.findById(id);

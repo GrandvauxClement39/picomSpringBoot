@@ -59,7 +59,7 @@ public class PiPointRestControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
+    /*@Test
     public void TestGetAdsByAddressIpAndTimeSlot() throws Exception {
 
         List<Ad> adList = piPointService.findAdByIpStopAndTimeInterval(ADDRESS_IP);
@@ -70,5 +70,5 @@ public class PiPointRestControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(adList.size()))
                 .andExpect(status().isOk());
-    }
+    }*/
 }

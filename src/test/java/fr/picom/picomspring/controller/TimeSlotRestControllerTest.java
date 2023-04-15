@@ -18,6 +18,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,7 +54,7 @@ public class TimeSlotRestControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].timeSlot").value("6-7"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].coefMulti").value(1.8))
-              //  .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
 

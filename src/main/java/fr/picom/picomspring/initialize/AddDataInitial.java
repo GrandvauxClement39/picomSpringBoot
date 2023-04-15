@@ -276,11 +276,9 @@ public class AddDataInitial implements CommandLineRunner {
             adArea.setArea(areaList.get(random.nextInt(areaList.size() - 1)));
 
             List<TimeInterval> timeIntervalList1 = new ArrayList<>();
-            int randomIndex = random.nextInt(timeIntervalList.size() - 4);
+            int randomIndex = random.nextInt(timeIntervalList.size() - 2);
             timeIntervalList1.add(timeIntervalList.get(randomIndex));
             timeIntervalList1.add(timeIntervalList.get(randomIndex + 1));
-            timeIntervalList1.add(timeIntervalList.get(randomIndex + 2));
-            timeIntervalList1.add(timeIntervalList.get(randomIndex + 3));
 
             adArea.setTimeIntervalList(timeIntervalList1);
             ad.setAdAreaList(adAreaList);

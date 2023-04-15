@@ -3,6 +3,7 @@ package fr.picom.picomspring.controller;
 import fr.picom.picomspring.model.Country;
 import fr.picom.picomspring.service.CountryService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class CountryRestController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     public Country addNewCountry(@RequestBody Country country){
         return countryService.add(country);
     }

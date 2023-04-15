@@ -1,6 +1,7 @@
 package fr.picom.picomspring.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class User {
     @NotEmpty(message = "Veuillez renseigner votre email")
     private String email;
 
-
+    @JsonIgnore
     private String password;
 
     private String phoneNumber;
@@ -44,8 +45,8 @@ public class User {
 
     private String postalCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+    @ManyToOne
+    @JsonManagedReference
     private City city;
 
    @ManyToMany(fetch = FetchType.LAZY)
@@ -173,22 +174,4 @@ public class User {
         this.adList = adList;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", isVerified=" + isVerified +
-                ", numSiret='" + numSiret + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", roadName='" + roadName + '\'' +
-                ", postalCode='" + postalCode + '\'' +
-                ", city=" + city +
-                ", role=" + roles +
-                '}';
-    }
 }
