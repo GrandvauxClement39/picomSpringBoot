@@ -30,6 +30,9 @@ public class WebSecurityConfig {
     @Value("${app.cors.webappUrl}") // Injecter la propriété app.cors.webappUrl depuis app.properties
     private String webappUrl;
 
+    @Value("${app.cors.piPointUrl}")
+    private String piPointUrl;
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -82,8 +85,10 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        //configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "file://", "android-app://com.example")); // Autoriser localhost:4200, file:// (pour Electron) et android-app://com.example (pour Android)
-        configuration.setAllowedOrigins(Arrays.asList(webappUrl)); // Autoriser uniquement localhost:4200
+        // Autoriser uniquement les url de la webapp et piPoint
+        // Pour autoriser app electron --> "file://",
+        // Pour autoriser app android --> "android-app://com.example"
+        configuration.setAllowedOrigins(Arrays.asList(webappUrl, piPointUrl));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
       //  configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

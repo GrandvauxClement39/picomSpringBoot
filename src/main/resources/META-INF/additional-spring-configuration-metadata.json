@@ -29,5 +29,10 @@
       "name": "app.jwt.secret",
       "type": "java.lang.String",
       "description": "Description for app.jwt.secret."
+    },
+    {
+      "name": "app.cors.webappUrl",
+      "type": "java.lang.String",
+      "description": "Description for app.cors.webappUrl."
     }
   ] }
