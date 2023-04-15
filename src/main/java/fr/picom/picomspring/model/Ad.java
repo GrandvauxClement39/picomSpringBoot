@@ -42,6 +42,7 @@ public class Ad {
     private List<AdArea> adAreaList;
 
     public Ad() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {

@@ -50,7 +50,11 @@ public class AreaRestController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("")
-    public Area updateArea(@RequestBody Area area){
+    public Area updateArea(@RequestBody AreaDTO areaDTO){
+        Area area = areaService.findById(areaDTO.getId());
+        area.setPrice(areaDTO.getPrice());
+        area.setName(areaDTO.getName());
+
         return areaService.update(area);
     }
 }

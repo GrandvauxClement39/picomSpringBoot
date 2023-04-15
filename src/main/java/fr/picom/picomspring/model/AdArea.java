@@ -26,6 +26,7 @@ public class AdArea {
     private List<TimeInterval> timeIntervalList;
 
     public AdArea() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {

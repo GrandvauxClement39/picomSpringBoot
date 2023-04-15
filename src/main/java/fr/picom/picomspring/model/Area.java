@@ -30,6 +30,7 @@ public class Area {
     private List<AdArea> adAreaList;
 
     public Area() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {

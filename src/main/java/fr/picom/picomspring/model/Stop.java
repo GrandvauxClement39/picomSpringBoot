@@ -32,6 +32,7 @@ public class Stop {
     private String addressIp;
 
     public Stop() {
+        // This method is intentionally left blank as it will be implemented later.
     }
 
     public Long getId() {
