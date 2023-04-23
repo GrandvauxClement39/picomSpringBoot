@@ -1,8 +1,12 @@
 package fr.picom.picomspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.picom.picomspring.dto.AdAreaDTO;
 import fr.picom.picomspring.model.Ad;
+import fr.picom.picomspring.model.TimeInterval;
 import fr.picom.picomspring.service.AdService;
+import fr.picom.picomspring.service.AreaService;
+import fr.picom.picomspring.service.TimeIntervalService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -37,6 +42,12 @@ public class AdRestControllerTest {
 
     @Autowired
     private AdService adService;
+
+    @Autowired
+    private TimeIntervalService timeIntervalService;
+
+    @Autowired
+    private AreaService areaService;
 
     private final static String PATH = "http://localhost:8280/api";
 
@@ -82,6 +93,7 @@ public class AdRestControllerTest {
         String text = "Test Text";
         String localDate = "2023-04-05";
         Integer numDaysOfDiffusion = 5;
+
         String adAreaDTOString = "[{\"areaId\":1,\"timeIntervalIdList\":[2,5]}, {\"areaId\":2,\"timeIntervalIdList\":[4,8,9]}]";
         mockMvc.perform(MockMvcRequestBuilders.multipart(PATH + "/ad")
                         .param("title", title)
@@ -99,13 +111,27 @@ public class AdRestControllerTest {
     @WithMockUser(roles = "CUSTOMER")
     @Test
     public void TestCreateAdWithFile() throws Exception {
-
-        MockMultipartFile file = new MockMultipartFile("file", "test.jpg", MediaType.IMAGE_JPEG_VALUE, "Hello, World!".getBytes());
+        List<TimeInterval> timeIntervalList = timeIntervalService.findAll();
+        MockMultipartFile file = new MockMultipartFile("file", "test.jpg",
+                MediaType.IMAGE_JPEG_VALUE, "Hello, World!".getBytes());
         String title = "Test Title with file";
         Long userId = 1L;
         String localDate = "2023-04-05";
         Integer numDaysOfDiffusion = 5;
-        String adAreaDTOString = "[{\"areaId\":1,\"timeIntervalIdList\":[2,5]}, {\"areaId\":2,\"timeIntervalIdList\":[4,8,9]}]";
+
+        List<Long> timeIntervalIdList = new ArrayList<>();
+        Long idFirstTimeIntervalSelected = timeIntervalList.get(3).getId();
+        timeIntervalIdList.add(idFirstTimeIntervalSelected);
+        timeIntervalIdList.add(timeIntervalList.get(12).getId());
+        Long idFirstAreaSelected = areaService.findById(2L).getId();
+        AdAreaDTO adAreaDTOFirst = new AdAreaDTO(idFirstAreaSelected, timeIntervalIdList);
+        AdAreaDTO adAreaDTOSecond = new AdAreaDTO(areaService.findById(1L).getId(), timeIntervalIdList);
+
+        List<AdAreaDTO> adAreaDTOList = new ArrayList<>();
+        adAreaDTOList.add(adAreaDTOFirst);
+        adAreaDTOList.add(adAreaDTOSecond);
+
+        String adAreaDTOString = objectMapper.writeValueAsString(adAreaDTOList);
 
         mockMvc.perform(MockMvcRequestBuilders.multipart(PATH + "/ad")
                         .file(file)
@@ -117,6 +143,8 @@ public class AdRestControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(title))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.numDaysOfDiffusion").value(numDaysOfDiffusion))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.adAreaList[0].area.id").value(idFirstAreaSelected))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.adAreaList[0].timeIntervalList[0].id").value(idFirstTimeIntervalSelected))
                 .andExpect(status().isCreated());
     }
 }
