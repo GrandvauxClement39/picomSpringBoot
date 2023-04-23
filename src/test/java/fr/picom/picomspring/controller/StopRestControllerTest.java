@@ -55,7 +55,6 @@ public class StopRestControllerTest {
     @Test
     public void TestGetStopSuccess() throws Exception{
         mockMvc.perform(get("/api/stop")
-                     //   .header("Authorization", "Bearer ".concat(accessToken))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
