@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -111,28 +112,28 @@ public class AdRestControllerTest {
     @WithMockUser(roles = "CUSTOMER")
     @Test
     public void TestCreateAdWithFile() throws Exception {
-        List<TimeInterval> timeIntervalList = timeIntervalService.findAll();
+        // Define static value
         MockMultipartFile file = new MockMultipartFile("file", "test.jpg",
                 MediaType.IMAGE_JPEG_VALUE, "Hello, World!".getBytes());
         String title = "Test Title with file";
         Long userId = 1L;
         String localDate = "2023-04-05";
         Integer numDaysOfDiffusion = 5;
-
+        // Get Time interval available for an area and select two time interval for adArea
+        Random random = new Random();
+        Long idAreaSelected = 1L;
+        List<TimeInterval> timeListAvailableArea = timeIntervalService.getTimeIntervalAvailableForArea(idAreaSelected);
         List<Long> timeIntervalIdList = new ArrayList<>();
-        Long idFirstTimeIntervalSelected = timeIntervalList.get(3).getId();
+        int randomFirst = random.nextInt(timeListAvailableArea.size() - 2);
+        Long idFirstTimeIntervalSelected = timeListAvailableArea.get(randomFirst).getId();
         timeIntervalIdList.add(idFirstTimeIntervalSelected);
-        timeIntervalIdList.add(timeIntervalList.get(12).getId());
-        Long idFirstAreaSelected = areaService.findById(2L).getId();
-        AdAreaDTO adAreaDTOFirst = new AdAreaDTO(idFirstAreaSelected, timeIntervalIdList);
-        AdAreaDTO adAreaDTOSecond = new AdAreaDTO(areaService.findById(1L).getId(), timeIntervalIdList);
-
+        timeIntervalIdList.add(timeListAvailableArea.get(randomFirst + 1).getId());
+        // Create final list of object adAreaDTO contain ad selected and their time slot
+        AdAreaDTO adAreaDTOFirst = new AdAreaDTO(idAreaSelected, timeIntervalIdList);
         List<AdAreaDTO> adAreaDTOList = new ArrayList<>();
         adAreaDTOList.add(adAreaDTOFirst);
-        adAreaDTOList.add(adAreaDTOSecond);
 
         String adAreaDTOString = objectMapper.writeValueAsString(adAreaDTOList);
-
         mockMvc.perform(MockMvcRequestBuilders.multipart(PATH + "/ad")
                         .file(file)
                         .param("title", title)
@@ -143,7 +144,7 @@ public class AdRestControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(title))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.numDaysOfDiffusion").value(numDaysOfDiffusion))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.adAreaList[0].area.id").value(idFirstAreaSelected))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.adAreaList[0].area.id").value(idAreaSelected))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.adAreaList[0].timeIntervalList[0].id").value(idFirstTimeIntervalSelected))
                 .andExpect(status().isCreated());
     }
